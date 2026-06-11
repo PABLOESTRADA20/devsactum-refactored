@@ -52,7 +52,7 @@ export default function Login() {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`flex-1 py-2 text-[12px] font-bold rounded-[9px] cursor-pointer border-none transition-all duration-200 ${
+              className={`flex-1 py-2 text-sm font-bold rounded-lg cursor-pointer border-none transition-colors duration-200 ${
                 tab === t ? "bg-accent text-[#1a0033]" : "bg-transparent text-text hover:text-text-h"
               }`}
             >
@@ -132,7 +132,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full h-[44px] rounded-[9px] border-none flex items-center justify-center gap-2 text-[13px] font-extrabold transition-all duration-150 ${
+              className={`w-full h-[44px] rounded-lg border-none flex items-center justify-center gap-2 text-sm font-extrabold transition-colors duration-150 ${
                 loading ? "bg-accent/70 cursor-not-allowed text-[#1a0033]" : "bg-accent text-[#1a0033] cursor-pointer hover:opacity-85"
               }`}
             >

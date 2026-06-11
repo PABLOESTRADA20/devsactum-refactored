@@ -9,12 +9,6 @@ interface ToastCtx  { success(t: string, m?: string): void; error(t: string, m?:
 const Ctx = createContext<ToastCtx>({ success:()=>{}, error:()=>{}, warning:()=>{}, info:()=>{} })
 
 const ICONS = { success:CheckCircle, error:XCircle, warning:AlertCircle, info:Info }
-const COLORS = {
-  success: { bg:"rgba(59,165,93,0.12)",    border:"rgba(59,165,93,0.3)",    icon:"#3ba55d" },
-  error:   { bg:"rgba(239,68,68,0.12)",    border:"rgba(239,68,68,0.3)",    icon:"#ef4444" },
-  warning: { bg:"rgba(245,158,11,0.12)",   border:"rgba(245,158,11,0.3)",   icon:"#f59e0b" },
-  info:    { bg:"rgba(196,154,255,0.12)",  border:"rgba(196,154,255,0.3)",  icon:"#c49aff" },
-}
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<ToastItem[]>([])
@@ -39,16 +33,27 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {children}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex flex-col gap-2 pointer-events-none items-center">
         {toasts.map(t => {
-          const { bg, border, icon } = COLORS[t.type]
           const Icon = ICONS[t.type]
+          const borderMap = {
+            success: "border-[rgba(59,165,93,0.3)]",
+            error: "border-[rgba(239,68,68,0.3)]",
+            warning: "border-[rgba(245,158,11,0.3)]",
+            info: "border-accent-border",
+          }
+          const iconColorMap = {
+            success: "text-online",
+            error: "text-[#ef4444]",
+            warning: "text-away",
+            info: "text-accent",
+          }
           return (
-            <div key={t.id} className="pointer-events-auto animate-fade-in flex items-start gap-3 px-4 py-3 rounded-[12px] border min-w-[280px] max-w-[380px] shadow-2xl glass" style={{ background:bg, borderColor:border }}>
-              <Icon size={15} strokeWidth={2} style={{ color:icon }} className="shrink-0 mt-0.5" />
+            <div key={t.id} className={cn("pointer-events-auto animate-fade-in flex items-start gap-3 px-4 py-3 rounded-xl border min-w-[280px] max-w-[380px] shadow-2xl glass", borderMap[t.type])}>
+              <Icon size={15} strokeWidth={2} className={cn("shrink-0 mt-0.5", iconColorMap[t.type])} />
               <div className="flex-1 min-w-0">
-                <div className="text-[13px] font-bold text-[#f3f4f6]">{t.title}</div>
-                {t.message && <div className="text-[11px] text-[#6b6375] mt-0.5">{t.message}</div>}
+                <div className="text-[13px] font-bold text-text-h">{t.title}</div>
+                {t.message && <div className="text-[11px] text-text-secondary mt-0.5">{t.message}</div>}
               </div>
-              <button onClick={() => remove(t.id)} className="bg-transparent border-none cursor-pointer text-[#6b6375] p-0.5 shrink-0 flex">
+              <button onClick={() => remove(t.id)} className="bg-transparent border-none cursor-pointer text-text-secondary p-0.5 shrink-0 flex">
                 <X size={12} strokeWidth={2} />
               </button>
             </div>
@@ -60,3 +65,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useToast() { return useContext(Ctx) }
+
+function cn(...classes: (string | undefined | null | false)[]) {
+  return classes.filter(Boolean).join(" ")
+}

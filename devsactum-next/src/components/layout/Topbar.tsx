@@ -31,12 +31,12 @@ export function Topbar() {
   const results = SUGGESTIONS.filter(s => !q || s.label.toLowerCase().includes(q.toLowerCase()))
 
   return (
-    <header style={{ height:56, minHeight:56, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 20px", background:"rgba(19,19,19,0.85)", backdropFilter:"blur(12px)", borderBottom:"1px solid #2e303a", flexShrink:0, zIndex:30, position:"relative" }}>
+    <header className="h-14 min-h-[56px] flex items-center justify-between px-5 bg-bg-surface/85 backdrop-blur-[12px] border-b border-border shrink-0 z-30 relative">
 
       {/* Search */}
-      <div style={{ flex:1, maxWidth:480, margin:"0 auto", position:"relative" }}>
-        <div style={{ display:"flex", alignItems:"center", gap:8, border:`1px solid ${open ? "rgba(196,154,255,0.4)" : "#2e303a"}`, borderRadius:9, padding:"7px 12px", background:"#0e0e0e", boxShadow: open ? "0 0 0 3px rgba(196,154,255,0.08)" : "none", transition:"all 0.2s" }}>
-          <Search size={13} color="#6b6375" style={{ opacity:0.6, flexShrink:0 }} />
+      <div className="flex-1 max-w-[480px] mx-auto relative">
+        <div className={`flex items-center gap-2 border rounded-md px-3 py-[7px] bg-bg transition-[border-color,box-shadow] duration-200 ${open ? "border-accent-border shadow-[0_0_0_3px_rgba(196,154,255,0.08)]" : "border-border"}`}>
+          <Search size={13} className="text-text-secondary opacity-60 shrink-0" />
           <input
             ref={inputRef}
             value={q}
@@ -44,29 +44,33 @@ export function Topbar() {
             onFocus={() => setOpen(true)}
             onBlur={() => setTimeout(() => setOpen(false), 150)}
             placeholder="Buscar en Devsanctum..."
-            style={{ background:"transparent", border:"none", outline:"none", fontSize:12, color:"#f3f4f6", width:"100%" }}
+            className="bg-transparent border-none outline-none text-sm text-text-h w-full"
           />
           {q
-            ? <button onClick={() => setQ("")} style={{ background:"none", border:"none", cursor:"pointer", display:"flex", color:"#6b6375" }}><X size={12} strokeWidth={2} /></button>
-            : <div style={{ display:"flex", alignItems:"center", gap:2, opacity:0.3, flexShrink:0 }}>
-                <Command size={10} color="#6b6375" /><span style={{ fontSize:10, fontFamily:"monospace", color:"#6b6375" }}>K</span>
+            ? <button onClick={() => setQ("")} className="bg-none border-none cursor-pointer flex text-text-secondary p-0"><X size={12} strokeWidth={2} /></button>
+            : <div className="flex items-center gap-0.5 opacity-30 shrink-0">
+                <Command size={10} className="text-text-secondary" /><span className="text-[10px] font-mono text-text-secondary">K</span>
               </div>
           }
         </div>
 
         {/* Dropdown */}
         {open && results.length > 0 && (
-          <div style={{ position:"absolute", top:"calc(100% + 6px)", left:0, right:0, background:"#131313", border:"1px solid #2e303a", borderRadius:12, boxShadow:"0 20px 40px rgba(0,0,0,0.6)", overflow:"hidden", zIndex:100 }} className="animate-fade-in">
-            <div style={{ padding:"8px 12px 4px", fontSize:9, fontWeight:800, textTransform:"uppercase", letterSpacing:"1.5px", color:"#6b6375", opacity:0.5 }}>
+          <div className="absolute top-[calc(100%+6px)] left-0 right-0 bg-bg-surface border border-border rounded-xl shadow-2xl overflow-hidden z-100 animate-fade-in">
+            <div className="px-3 pt-2 pb-1 text-[9px] font-extrabold uppercase tracking-[1.5px] text-text-secondary opacity-50">
               {q ? "Resultados" : "Sugerencias"}
             </div>
+            {results.length === 0 && q && (
+              <div className="px-3 py-3 text-sm text-text-secondary text-center">
+                Sin resultados para &ldquo;{q}&rdquo;
+              </div>
+            )}
             {results.map((s, i) => (
               <button key={i} onClick={() => { setActivePage(s.page); setOpen(false); setQ("") }}
-                style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 12px", background:"none", border:"none", cursor:"pointer" }}
-                className="hover:bg-[#1a1a1f] transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 bg-transparent border-none cursor-pointer hover:bg-bg-hover transition-colors"
               >
-                <span style={{ fontSize:12, fontWeight:600, color:"#f3f4f6" }}>{s.label}</span>
-                <span style={{ fontSize:10, color:"#6b6375" }}>Página</span>
+                <span className="text-sm font-semibold text-text-h">{s.label}</span>
+                <span className="text-[10px] text-text-secondary">Página</span>
               </button>
             ))}
           </div>
@@ -74,12 +78,12 @@ export function Topbar() {
       </div>
 
       {/* Right */}
-      <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-        <button onClick={() => setActivePage("Notificaciones" as Page)} style={{ position:"relative", width:32, height:32, background:"none", border:"none", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", borderRadius:8, color:"#6b6375" }} className="hover:bg-[#1a1a1f] hover:!text-[#f3f4f6] transition-colors">
+      <div className="flex items-center gap-1.5">
+        <button onClick={() => setActivePage("Notificaciones" as Page)} className="relative w-8 h-8 bg-transparent border-none cursor-pointer flex items-center justify-center rounded-md text-text-secondary hover:bg-bg-hover hover:text-text-h transition-colors">
           <Bell size={15} strokeWidth={1.8} />
-          <span style={{ position:"absolute", top:6, right:6, width:6, height:6, borderRadius:"50%", background:"#ff94a8" }} />
+          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-tertiary" />
         </button>
-        <button onClick={() => setActivePage("Perfil" as Page)} style={{ background:"none", border:"none", cursor:"pointer", padding:0 }}>
+        <button onClick={() => setActivePage("Perfil" as Page)} className="bg-transparent border-none cursor-pointer p-0">
           <Avatar initials={ME.initials} color={ME.avatarColor} bg={ME.avatarBg} size="sm" shape="circle" />
         </button>
       </div>

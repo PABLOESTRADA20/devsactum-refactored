@@ -1,11 +1,12 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Heart, MessageSquare, Share2, MoreHorizontal, Repeat2, Plus,
   Image, Code2, Link, Send, Smile, BookOpen, X,
 } from "lucide-react"
 import { useToast } from "@/src/components/ui/Toast"
+import { PostSkeleton } from "@/src/components/ui"
 
 const POSTS = [
   {
@@ -18,7 +19,7 @@ const POSTS = [
   },
   {
     id: 2, initials: "ER", name: "Elena Rivera", handle: "@elena_codes", time: "5h",
-    text: "Terminé la UI hardware-acelerada para el nuevo emulador de terminal. El tonal layering y los luminescent pulses se sienten mucho mejor que los bordes estándar. 🎨",
+    text: "Terminé la UI hardware-acelerada para el nuevo emulador de terminal. El tonal layering y los luminescent pulses se sienten mucho mejor que los bordes estándar.",
     tags: ["Design System", "Rust", "WGPU"],
     likes: 452, comments: 29, shares: 8, liked: true,
     avatarColor: "#ff94a8", avatarBg: "rgba(255,148,168,.15)",
@@ -60,7 +61,7 @@ function Composer({ onPost }: { onPost: (text: string) => void }) {
   }
 
   return (
-    <div className={`mx-6 mt-5 mb-2 border rounded-[14px] transition-all duration-200 ${focused ? "border-accent-border bg-bg-surface" : "border-border bg-bg-surface"}`}>
+    <div className={`mx-6 mt-5 mb-2 border rounded-xl transition-colors duration-200 ${focused ? "border-accent-border bg-bg-surface" : "border-border bg-bg-surface"}`}>
       <div className="flex gap-3 p-4">
         <div className="w-9 h-9 rounded-full bg-accent-bg border border-accent-border flex items-center justify-center text-[12px] font-bold text-accent shrink-0">
           AV
@@ -72,7 +73,7 @@ function Composer({ onPost }: { onPost: (text: string) => void }) {
             onFocus={() => setFocused(true)}
             placeholder="¿Qué estás construyendo hoy?"
             rows={focused ? 3 : 1}
-            className="w-full bg-transparent border-none outline-none text-[13px] text-text-h resize-none placeholder:text-text placeholder:opacity-40 leading-[1.6]"
+            className="w-full bg-transparent border-none outline-none text-sm text-text-h resize-none placeholder:text-text-secondary placeholder:opacity-40 leading-[1.6]"
           />
         </div>
       </div>
@@ -86,19 +87,19 @@ function Composer({ onPost }: { onPost: (text: string) => void }) {
               { Icon: Smile,   title: "Emoji" },
             ].map(({ Icon, title }) => (
               <button key={title} title={title}
-                className="p-1.5 rounded-lg text-text bg-transparent border-none cursor-pointer hover:bg-bg-hover hover:text-text-h transition-colors">
+                className="p-1.5 rounded-lg text-text-secondary bg-transparent border-none cursor-pointer hover:bg-bg-hover hover:text-text-h transition-colors">
                 <Icon size={14} strokeWidth={1.8} />
               </button>
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <span className={`text-[10px] font-mono ${text.length > 280 ? "text-tertiary" : "text-text opacity-40"}`}>
+            <span className={`text-[10px] font-mono ${text.length > 280 ? "text-tertiary" : "text-text-secondary opacity-40"}`}>
               {text.length}/300
             </span>
             <button
               onClick={submit}
               disabled={!text.trim()}
-              className="flex items-center gap-1.5 bg-accent text-[#1a0033] border-none rounded-[8px] px-3.5 py-1.5 text-[12px] font-bold cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-85 transition-opacity"
+              className="flex items-center gap-1.5 bg-accent text-[#1a0033] border-none rounded-md px-3.5 py-1.5 text-sm font-bold cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-85 transition-opacity"
             >
               <Send size={12} strokeWidth={2.5} /> Publicar
             </button>
@@ -111,12 +112,18 @@ function Composer({ onPost }: { onPost: (text: string) => void }) {
 
 export default function Feed() {
   const { success } = useToast()
+  const [loading, setLoading] = useState(true)
   const [posts, setPosts]   = useState(POSTS)
   const [likes, setLikes]   = useState<Record<number, { count: number; liked: boolean }>>(
     Object.fromEntries(POSTS.map(p => [p.id, { count: p.likes, liked: p.liked }]))
   )
   const [commenting, setCommenting] = useState<number | null>(null)
   const [commentText, setCommentText] = useState("")
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 800)
+    return () => clearTimeout(t)
+  }, [])
 
   function toggleLike(id: number) {
     setLikes(prev => ({
@@ -146,11 +153,11 @@ export default function Feed() {
   }
 
   return (
-    <div className="relative pb-20">
+    <div className="relative pb-24">
       {/* Live indicator */}
       <div className="flex items-center gap-2 px-6 pt-5">
         <div className="w-1.5 h-1.5 rounded-full bg-online animate-pulse-slow shrink-0" />
-        <span className="text-[10px] font-bold uppercase tracking-[1.2px] text-text opacity-60">
+        <span className="text-[10px] font-bold uppercase tracking-[1.2px] text-text-secondary opacity-60">
           Actividad en vivo · 124 devs activos
         </span>
       </div>
@@ -161,8 +168,8 @@ export default function Feed() {
       <div className="flex gap-1 px-6 mt-5 border-b border-border">
         {["Para ti", "Siguiendo", "Tendencias"].map((tab, i) => (
           <button key={tab}
-            className={`px-4 py-2.5 text-[12px] cursor-pointer border-none bg-transparent border-b-2 -mb-px transition-colors duration-150 ${
-              i === 0 ? "border-accent text-accent font-bold" : "border-transparent text-text font-medium hover:text-text-h"
+            className={`px-4 py-2.5 text-sm cursor-pointer border-none bg-transparent border-b-2 -mb-px transition-colors duration-150 ${
+              i === 0 ? "border-accent text-accent font-bold" : "border-transparent text-text-secondary font-medium hover:text-text-h"
             }`}
           >
             {tab}
@@ -170,165 +177,173 @@ export default function Feed() {
         ))}
       </div>
 
-      {/* Posts */}
+      {/* Posts or Skeletons */}
       <div className="px-6 py-5 flex flex-col gap-0">
-        {posts.map((post, idx) => (
-          <article
-            key={post.id}
-            className="animate-fade-in"
-            style={{ animationDelay: `${idx * 40}ms` }}
-          >
-            <div className={`py-6 ${(post as any).milestone ? "bg-bg-surface border border-border rounded-2xl p-5 mb-4" : "border-b border-border"}`}>
-              <div className="flex gap-3.5">
-                {/* Avatar */}
-                <div
-                  className="w-10 h-10 rounded-[10px] flex items-center justify-center text-[12px] font-bold shrink-0"
-                  style={{ background: post.avatarBg, color: post.avatarColor }}
-                >
-                  {post.initials}
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  {/* Header */}
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <span className="text-[14px] font-bold text-text-h">{post.name}</span>
-                      <span className="text-[12px] text-text ml-2 opacity-60">{post.handle}</span>
-                      <span className="text-[11px] text-text opacity-40 ml-1.5">· {post.time}</span>
-                    </div>
-                    <button className="bg-transparent border-none cursor-pointer text-text p-1 hover:text-text-h rounded-md hover:bg-bg-hover transition-colors">
-                      <MoreHorizontal size={15} strokeWidth={1.8} />
-                    </button>
+        {loading ? (
+          <>
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+          </>
+        ) : (
+          posts.map((post, idx) => (
+            <article
+              key={post.id}
+              className="animate-fade-in"
+              style={{ animationDelay: `${idx * 40}ms` }}
+            >
+              <div className={`py-6 ${(post as any).milestone ? "bg-bg-surface border border-border rounded-2xl p-5 mb-4" : "border-b border-border"}`}>
+                <div className="flex gap-3.5">
+                  {/* Avatar */}
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center text-[12px] font-bold shrink-0"
+                    style={{ background: post.avatarBg, color: post.avatarColor }}
+                  >
+                    {post.initials}
                   </div>
 
-                  {post.text && (
-                    <p className="text-[13.5px] text-text leading-[1.7] mb-3">{post.text}</p>
-                  )}
-
-                  {/* Code block */}
-                  {(post as any).code && (
-                    <div className="rounded-[10px] overflow-hidden border border-border mb-3.5">
-                      <div className="bg-bg-hover px-3.5 py-2 flex justify-between items-center border-b border-border">
-                        <div className="flex items-center gap-2">
-                          <div className="flex gap-1">
-                            <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
-                            <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
-                            <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
-                          </div>
-                          <span className="text-[10px] font-mono text-text opacity-60">{(post as any).codeFile}</span>
-                        </div>
-                        <button
-                          className="text-[10px] text-text opacity-50 bg-transparent border-none cursor-pointer hover:opacity-100 hover:text-accent transition-colors"
-                          onClick={() => success("Código copiado")}
-                        >
-                          Copiar
-                        </button>
+                  <div className="flex-1 min-w-0">
+                    {/* Header */}
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <span className="text-sm font-bold text-text-h">{post.name}</span>
+                        <span className="text-sm text-text-secondary ml-2">{post.handle}</span>
+                        <span className="text-xs text-text-secondary ml-1.5">· {post.time}</span>
                       </div>
-                      <pre className="m-0 p-4 bg-black text-[12px] font-mono text-accent overflow-x-auto leading-[1.7]">
-                        <code>{(post as any).code}</code>
-                      </pre>
-                    </div>
-                  )}
-
-                  {/* Tags */}
-                  {(post as any).tags && (
-                    <div className="flex gap-1.5 mb-3 flex-wrap">
-                      {(post as any).tags.map((tag: string) => (
-                        <span key={tag} className="bg-accent-bg text-accent border border-accent-border text-[10px] font-bold px-2.5 py-0.5 rounded-full">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Milestone */}
-                  {(post as any).milestone && (
-                    <div className="grid grid-cols-2 gap-2.5 mb-3.5">
-                      <div className="bg-bg-hover border border-border rounded-[10px] p-4 col-span-2">
-                        <span className="text-[9px] font-bold text-accent uppercase tracking-[1.5px] block mb-1.5">Milestone</span>
-                        <p className="text-[13px] text-text-h italic leading-[1.5] m-0">&ldquo;{(post as any).milestone.quote}&rdquo;</p>
-                      </div>
-                      <div className="bg-bg-hover border border-border rounded-[10px] p-4">
-                        <div className="flex items-baseline gap-1.5">
-                          <span className="text-[26px] font-black text-text-h tracking-tight">{(post as any).milestone.stat}</span>
-                          <span className="text-[11px] text-text">{(post as any).milestone.statLabel}</span>
-                        </div>
-                        <span className="text-[9px] font-bold text-text uppercase tracking-[1px] mt-1 block">{(post as any).milestone.statCaption}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-5 mt-1">
-                    <button
-                      onClick={() => toggleLike(post.id)}
-                      className={`flex items-center gap-1.5 bg-transparent border-none cursor-pointer text-[12px] font-bold transition-all duration-150 p-0 hover:scale-110 ${likes[post.id]?.liked ? "text-tertiary" : "text-text hover:text-tertiary"}`}
-                    >
-                      <Heart size={15} strokeWidth={1.8} fill={likes[post.id]?.liked ? "currentColor" : "none"} />
-                      {fmt(likes[post.id]?.count ?? post.likes)}
-                    </button>
-                    <button
-                      onClick={() => setCommenting(commenting === post.id ? null : post.id)}
-                      className="flex items-center gap-1.5 bg-transparent border-none cursor-pointer text-[12px] font-bold text-text hover:text-accent p-0 transition-colors"
-                    >
-                      <MessageSquare size={15} strokeWidth={1.8} />
-                      {post.comments}
-                    </button>
-                    {post.shares > 0 && (
-                      <button className="flex items-center gap-1.5 bg-transparent border-none cursor-pointer text-[12px] font-bold text-text hover:text-online p-0 transition-colors">
-                        <Repeat2 size={15} strokeWidth={1.8} />
-                        {post.shares}
+                      <button className="bg-transparent border-none cursor-pointer text-text-secondary p-1 hover:text-text-h rounded-md hover:bg-bg-hover transition-colors">
+                        <MoreHorizontal size={15} strokeWidth={1.8} />
                       </button>
-                    )}
-                    <button
-                      onClick={() => handleShare(post.id)}
-                      className="flex items-center gap-1.5 bg-transparent border-none cursor-pointer text-[12px] font-bold text-text hover:text-accent p-0 transition-colors ml-auto"
-                    >
-                      <Share2 size={15} strokeWidth={1.8} />
-                    </button>
-                  </div>
-
-                  {/* Inline comment input */}
-                  {commenting === post.id && (
-                    <div className="flex gap-2.5 mt-4 animate-fade-in">
-                      <div className="w-7 h-7 rounded-full bg-accent-bg text-accent flex items-center justify-center text-[10px] font-bold shrink-0">
-                        AV
-                      </div>
-                      <div className="flex-1 flex gap-2">
-                        <input
-                          value={commentText}
-                          onChange={e => setCommentText(e.target.value)}
-                          placeholder="Escribe un comentario..."
-                          autoFocus
-                          className="flex-1 bg-bg-hover border border-border rounded-lg px-3 py-1.5 text-[12px] text-text-h outline-none focus:border-accent-border transition-colors"
-                          onKeyDown={e => {
-                            if (e.key === "Enter" && commentText.trim()) {
-                              success("Comentario publicado")
-                              setCommentText("")
-                              setCommenting(null)
-                            }
-                          }}
-                        />
-                        <button
-                          onClick={() => setCommenting(null)}
-                          className="bg-transparent border-none cursor-pointer text-text p-1"
-                        >
-                          <X size={14} strokeWidth={2} />
-                        </button>
-                      </div>
                     </div>
-                  )}
+
+                    {post.text && (
+                      <p className="text-sm text-text leading-[1.7] mb-3">{post.text}</p>
+                    )}
+
+                    {/* Code block */}
+                    {(post as any).code && (
+                      <div className="rounded-lg overflow-hidden border border-border mb-3.5">
+                        <div className="bg-bg-hover px-3.5 py-2 flex justify-between items-center border-b border-border">
+                          <div className="flex items-center gap-2">
+                            <div className="flex gap-1">
+                              <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                              <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+                              <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                            </div>
+                            <span className="text-[10px] font-mono text-text-secondary">{(post as any).codeFile}</span>
+                          </div>
+                          <button
+                            className="text-[10px] text-text-secondary bg-transparent border-none cursor-pointer hover:opacity-100 hover:text-accent transition-colors"
+                            onClick={() => success("Código copiado")}
+                          >
+                            Copiar
+                          </button>
+                        </div>
+                        <pre className="m-0 p-4 bg-black text-[12px] font-mono text-accent overflow-x-auto leading-[1.7]">
+                          <code>{(post as any).code}</code>
+                        </pre>
+                      </div>
+                    )}
+
+                    {/* Tags */}
+                    {(post as any).tags && (
+                      <div className="flex gap-1.5 mb-3 flex-wrap">
+                        {(post as any).tags.map((tag: string) => (
+                          <span key={tag} className="bg-accent-bg text-accent border border-accent-border text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Milestone */}
+                    {(post as any).milestone && (
+                      <div className="grid grid-cols-2 gap-2.5 mb-3.5">
+                        <div className="bg-bg-hover border border-border rounded-lg p-4 col-span-2">
+                          <span className="text-[9px] font-bold text-accent uppercase tracking-[1.5px] block mb-1.5">Milestone</span>
+                          <p className="text-sm text-text-h italic leading-[1.5] m-0">&ldquo;{(post as any).milestone.quote}&rdquo;</p>
+                        </div>
+                        <div className="bg-bg-hover border border-border rounded-lg p-4">
+                          <div className="flex items-baseline gap-1.5">
+                            <span className="text-[26px] font-black text-text-h tracking-tight">{(post as any).milestone.stat}</span>
+                            <span className="text-[11px] text-text-secondary">{(post as any).milestone.statLabel}</span>
+                          </div>
+                          <span className="text-[9px] font-bold text-text-secondary uppercase tracking-[1px] mt-1 block">{(post as any).milestone.statCaption}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-5 mt-1">
+                      <button
+                        onClick={() => toggleLike(post.id)}
+                        className={`flex items-center gap-1.5 bg-transparent border-none cursor-pointer text-sm font-bold transition-colors duration-150 p-0 hover:scale-110 ${likes[post.id]?.liked ? "text-tertiary" : "text-text-secondary hover:text-tertiary"}`}
+                      >
+                        <Heart size={15} strokeWidth={1.8} fill={likes[post.id]?.liked ? "currentColor" : "none"} />
+                        {fmt(likes[post.id]?.count ?? post.likes)}
+                      </button>
+                      <button
+                        onClick={() => setCommenting(commenting === post.id ? null : post.id)}
+                        className="flex items-center gap-1.5 bg-transparent border-none cursor-pointer text-sm font-bold text-text-secondary hover:text-accent p-0 transition-colors"
+                      >
+                        <MessageSquare size={15} strokeWidth={1.8} />
+                        {post.comments}
+                      </button>
+                      {post.shares > 0 && (
+                        <button className="flex items-center gap-1.5 bg-transparent border-none cursor-pointer text-sm font-bold text-text-secondary hover:text-online p-0 transition-colors">
+                          <Repeat2 size={15} strokeWidth={1.8} />
+                          {post.shares}
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleShare(post.id)}
+                        className="flex items-center gap-1.5 bg-transparent border-none cursor-pointer text-sm font-bold text-text-secondary hover:text-accent p-0 transition-colors ml-auto"
+                      >
+                        <Share2 size={15} strokeWidth={1.8} />
+                      </button>
+                    </div>
+
+                    {/* Inline comment input */}
+                    {commenting === post.id && (
+                      <div className="flex gap-2.5 mt-4 animate-fade-in">
+                        <div className="w-7 h-7 rounded-full bg-accent-bg text-accent flex items-center justify-center text-[10px] font-bold shrink-0">
+                          AV
+                        </div>
+                        <div className="flex-1 flex gap-2">
+                          <input
+                            value={commentText}
+                            onChange={e => setCommentText(e.target.value)}
+                            placeholder="Escribe un comentario..."
+                            autoFocus
+                            className="flex-1 bg-bg-hover border border-border rounded-md px-3 py-1.5 text-sm text-text-h outline-none focus:border-accent-border transition-colors"
+                            onKeyDown={e => {
+                              if (e.key === "Enter" && commentText.trim()) {
+                                success("Comentario publicado")
+                                setCommentText("")
+                                setCommenting(null)
+                              }
+                            }}
+                          />
+                          <button
+                            onClick={() => setCommenting(null)}
+                            className="bg-transparent border-none cursor-pointer text-text-secondary p-1"
+                          >
+                            <X size={14} strokeWidth={2} />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))
+        )}
       </div>
 
       {/* FAB */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed right-6 bottom-6 w-12 h-12 rounded-[12px] bg-accent border-none cursor-pointer flex items-center justify-center z-50 shadow-2xl hover:opacity-85 transition-opacity animate-glow"
+        className="fixed right-6 bottom-6 w-12 h-12 rounded-xl bg-accent border-none cursor-pointer flex items-center justify-center z-50 shadow-2xl hover:opacity-85 transition-opacity animate-glow"
       >
         <Plus size={20} className="text-[#1a0033]" strokeWidth={2.5} />
       </button>

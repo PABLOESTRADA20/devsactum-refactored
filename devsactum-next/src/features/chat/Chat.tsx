@@ -94,7 +94,7 @@ export default function Chat() {
             <div
               key={c.id}
               onClick={() => setActiveChat(c.id)}
-              className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-150 border-l-2 ${
+              className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors duration-150 border-l-2 ${
                 activeChat === c.id
                   ? "bg-accent-bg border-accent"
                   : "border-transparent hover:bg-bg-hover"

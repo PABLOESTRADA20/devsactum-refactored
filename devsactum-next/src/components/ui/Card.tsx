@@ -14,9 +14,9 @@ export function Card({ hover, accent, padding = "md", className, children, ...pr
   return (
     <div
       className={cn(
-        "bg-[#131313] border border-[#2e303a] rounded-[14px]",
-        hover && "transition-all duration-200 cursor-pointer hover:border-[rgba(196,154,255,0.3)]",
-        accent && "border-[rgba(196,154,255,0.3)] bg-[rgba(196,154,255,0.06)]",
+        "bg-bg-surface border border-border rounded-xl",
+        hover && "transition-colors duration-200 cursor-pointer hover:border-accent-border",
+        accent && "border-accent-border bg-accent-bg",
         PAD[padding], className
       )}
       {...props}

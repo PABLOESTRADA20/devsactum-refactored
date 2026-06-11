@@ -63,3 +63,39 @@ export const BREAKPOINTS = {
   xl:  1280,
   "2xl": 1536,
 } as const
+
+// ─── Design System ────────────────────────────────────────────────────────────
+
+export const RADII = {
+  sm: 6,
+  md: 8,
+  lg: 10,
+  xl: 14,
+  "2xl": 16,
+  full: 9999,
+} as const
+
+export const SPACING = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
+  "2xl": 24,
+} as const
+
+export const FONT_SIZES = {
+  xs: 10,
+  sm: 12,
+  base: 13.5,
+  lg: 15,
+  xl: 18,
+  "2xl": 26,
+} as const
+
+export const ANIMATIONS = {
+  fast: "150ms",
+  normal: "200ms",
+  slow: "300ms",
+  easing: "ease",
+} as const

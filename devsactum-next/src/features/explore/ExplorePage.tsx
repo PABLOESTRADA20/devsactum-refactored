@@ -88,7 +88,7 @@ export default function ExplorePage() {
           <button
             key={f}
             onClick={() => setActiveFilter(f)}
-            className={`shrink-0 px-4 py-1.5 rounded-full text-[11px] font-bold cursor-pointer border transition-all duration-150 ${
+            className={`shrink-0 px-4 py-1.5 rounded-full text-[11px] font-bold cursor-pointer border transition-colors duration-150 ${
               activeFilter === f
                 ? "bg-accent text-[#1a0033] border-accent"
                 : "bg-bg-surface text-text border-border hover:border-accent-border"
@@ -142,7 +142,7 @@ export default function ExplorePage() {
               </div>
               <button
                 onClick={() => handleJoin(FEATURED.name)}
-                className={`px-7 py-2.5 rounded-[10px] text-[12px] font-extrabold cursor-pointer transition-all duration-150 border ${
+                className={`px-7 py-2.5 rounded-lg text-sm font-extrabold cursor-pointer transition-colors duration-150 border ${
                   joined[FEATURED.name]
                     ? "bg-transparent text-accent border-accent"
                     : "bg-accent text-[#1a0033] border-accent hover:opacity-85"
@@ -173,7 +173,7 @@ export default function ExplorePage() {
               {TRENDING_COMMUNITIES.map((c, idx) => (
                 <div
                   key={c.name}
-                  className="bg-bg-surface border border-border rounded-[14px] p-4 flex items-center gap-4 hover:border-accent-border transition-all duration-200 cursor-pointer animate-fade-in"
+                  className="bg-bg-surface border border-border rounded-xl p-4 flex items-center gap-4 hover:border-accent-border transition-colors duration-200 cursor-pointer animate-fade-in"
                   style={{ animationDelay: `${idx * 50}ms` }}
                 >
                   <div
@@ -197,7 +197,7 @@ export default function ExplorePage() {
                   </div>
                   <button
                     onClick={() => handleJoin(c.name)}
-                    className={`px-4 py-1.5 rounded-[8px] text-[11px] font-bold cursor-pointer transition-all duration-150 border shrink-0 ${
+                    className={`px-4 py-1.5 rounded-md text-[11px] font-bold cursor-pointer transition-colors duration-150 border shrink-0 ${
                       joined[c.name]
                         ? "bg-transparent text-accent border-accent"
                         : "bg-transparent text-text border-border hover:border-accent-border hover:text-accent"
@@ -267,7 +267,7 @@ export default function ExplorePage() {
                     <span className="text-[10px] text-text opacity-50">{dev.followers} seguidores</span>
                     <button
                       onClick={() => handleFollow(dev.handle)}
-                      className={`px-3 py-1 rounded-[7px] text-[10px] font-bold cursor-pointer transition-all border ${
+                      className={`px-3 py-1 rounded-[7px] text-[10px] font-bold cursor-pointer transition-colors border ${
                         followed[dev.handle]
                           ? "bg-transparent text-accent border-accent"
                           : "bg-accent text-[#1a0033] border-accent hover:opacity-85"

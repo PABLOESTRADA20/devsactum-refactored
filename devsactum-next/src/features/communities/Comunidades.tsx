@@ -76,7 +76,7 @@ export default function Comunidades() {
           <button
             key={f}
             onClick={() => setActiveFilter(f)}
-            className={`shrink-0 px-5 py-2 rounded-full text-[12px] font-bold cursor-pointer border transition-all duration-150 ${
+            className={`shrink-0 px-5 py-2 rounded-full text-[12px] font-bold cursor-pointer border transition-colors duration-150 ${
               activeFilter === f
                 ? "bg-accent text-[#1a0033] border-accent"
                 : "bg-bg-surface text-text border-border hover:border-accent-border"
@@ -112,7 +112,7 @@ export default function Comunidades() {
                 </div>
                 <button
                   onClick={() => setJoined((p) => ({ ...p, [c.name]: !p[c.name] }))}
-                  className={`px-7 py-2.5 rounded-[10px] text-[12px] font-extrabold cursor-pointer transition-all duration-150 border border-accent ${
+                  className={`px-7 py-2.5 rounded-lg text-sm font-extrabold cursor-pointer transition-colors duration-150 border border-accent ${
                     joined[c.name] ? "bg-transparent text-accent" : "bg-accent text-[#1a0033]"
                   }`}
                 >
@@ -174,7 +174,7 @@ export default function Comunidades() {
       {/* Discusiones globales */}
       <section className="mb-12">
         <div className="flex items-center gap-2 mb-5">
-          <div className="w-2 h-2 rounded-full bg-[#d896ff] shrink-0" />
+          <div className="w-2 h-2 rounded-full bg-accent shrink-0" />
           <span className="text-[10px] font-extrabold uppercase tracking-[2px] text-text">Discusiones globales</span>
         </div>
 

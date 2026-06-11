@@ -15,18 +15,18 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const V: Record<Variant, string> = {
-  primary:   "bg-[#c49aff] text-[#1a0033] hover:opacity-85 border-[#c49aff]",
-  secondary: "bg-[#1a1a1f] text-[#f3f4f6] hover:bg-[#2e303a] border-[#2e303a]",
-  ghost:     "bg-transparent text-[#6b6375] hover:bg-[#1a1a1f] hover:text-[#f3f4f6] border-transparent",
-  danger:    "bg-[rgba(239,68,68,0.12)] text-[#ef4444] hover:bg-[rgba(239,68,68,0.2)] border-[rgba(239,68,68,0.3)]",
-  outline:   "bg-transparent text-[#c49aff] hover:bg-[rgba(196,154,255,0.12)] border-[rgba(196,154,255,0.3)]",
+  primary:   "bg-accent text-[#1a0033] hover:opacity-85 border-accent",
+  secondary: "bg-bg-hover text-text-h hover:bg-border border-border",
+  ghost:     "bg-transparent text-text-secondary hover:bg-bg-hover hover:text-text-h border-transparent",
+  danger:    "bg-danger-bg text-danger hover:bg-danger-hover border-danger-border",
+  outline:   "bg-transparent text-accent hover:bg-accent-bg border-accent-border",
 }
 
 const S: Record<Size, string> = {
-  xs: "h-6  px-2.5 text-[10px] gap-1   rounded-md",
-  sm: "h-8  px-3.5 text-[11px] gap-1.5 rounded-[8px]",
-  md: "h-9  px-4   text-[12px] gap-2   rounded-[9px]",
-  lg: "h-11 px-5   text-[13px] gap-2.5 rounded-[10px]",
+  xs: "h-6  px-2.5 text-xs    gap-1   rounded-md",
+  sm: "h-8  px-3.5 text-sm    gap-1.5 rounded-md",
+  md: "h-9  px-4   text-sm    gap-2   rounded-md",
+  lg: "h-11 px-5   text-base  gap-2.5 rounded-lg",
 }
 
 export function Button({
@@ -39,7 +39,7 @@ export function Button({
       disabled={disabled || loading}
       className={cn(
         "inline-flex items-center justify-center font-bold border cursor-pointer select-none",
-        "transition-all duration-150 active:scale-[0.97]",
+        "transition-colors duration-150 active:scale-[0.97]",
         "disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none",
         V[variant], S[size],
         fullWidth && "w-full",

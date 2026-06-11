@@ -17,36 +17,42 @@ const STATUS_DOT: Record<string, string> = { online:"#3ba55d", away:"#f59e0b", o
 
 export function RightPanel() {
   return (
-    <aside aria-label="Panel de tendencias" style={{ width:260, minWidth:260, height:"100%", overflowY:"auto", background:"#131313", borderLeft:"1px solid #2e303a", flexShrink:0, display:"flex", flexDirection:"column" }}>
+    <aside aria-label="Panel de tendencias" className="w-[260px] min-w-[260px] h-full overflow-y-auto bg-bg-surface border-l border-border shrink-0 flex flex-col">
 
       {/* Tendencias */}
-      <div style={{ padding:"20px 20px 0" }}>
-        <p style={{ fontSize:9, fontWeight:800, textTransform:"uppercase", letterSpacing:"1.8px", color:"#6b6375", opacity:0.55, marginBottom:12 }}>Tendencias</p>
+      <div className="px-5 pt-5 pb-0">
+        <p className="text-[9px] font-extrabold uppercase tracking-[1.8px] text-text-secondary opacity-55 mb-3">Tendencias</p>
         {TRENDS.map((t, i) => (
-          <div key={t.name} style={{ padding:"12px 0", borderBottom: i < TRENDS.length - 1 ? "1px solid #2e303a" : "none", cursor:"pointer" }}>
-            <p style={{ fontSize:9, fontWeight:700, textTransform:"uppercase", letterSpacing:"1px", color:"#6b6375", opacity:0.5, margin:"0 0 3px" }}>{t.cat}</p>
-            <p style={{ fontSize:13, fontWeight:700, color:"#f3f4f6", margin:"0 0 2px" }}>{t.name}</p>
-            <p style={{ fontSize:11, color:"#6b6375", margin:0 }}>{t.count}</p>
+          <div key={t.name} className={`py-3 ${i < TRENDS.length - 1 ? "border-b border-border" : ""} cursor-pointer`}>
+            <p className="text-[9px] font-bold uppercase tracking-[1px] text-text-secondary opacity-50 m-0 mb-0.5">{t.cat}</p>
+            <p className="text-[13px] font-bold text-text-h m-0 mb-0.5">{t.name}</p>
+            <p className="text-[11px] text-text-secondary m-0">{t.count}</p>
           </div>
         ))}
       </div>
 
-      <div style={{ height:1, background:"#2e303a", margin:"16px 20px" }} />
+      <div className="h-px bg-border mx-5 my-4" />
 
       {/* En línea */}
-      <div style={{ padding:"0 20px 20px" }}>
-        <p style={{ fontSize:9, fontWeight:800, textTransform:"uppercase", letterSpacing:"1.8px", color:"#6b6375", opacity:0.55, marginBottom:12 }}>En línea</p>
+      <div className="px-5 pb-5">
+        <p className="text-[9px] font-extrabold uppercase tracking-[1.8px] text-text-secondary opacity-55 mb-3">En línea</p>
         {ONLINE.map(m => (
-          <div key={m.name} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 0", borderBottom:"1px solid #2e303a" }}>
+          <div key={m.name} className="flex items-center gap-2.5 py-2 border-b border-border">
             <div className="relative shrink-0">
-              <div style={{ width:32, height:32, borderRadius:"50%", background:m.bg, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700, color:"#fff" }}>
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold text-white"
+                style={{ background: m.bg }}
+              >
                 {m.init}
               </div>
-              <div style={{ position:"absolute", bottom:0, right:0, width:9, height:9, borderRadius:"50%", border:"2px solid #131313", background:STATUS_DOT[m.status] }} />
+              <div
+                className="absolute bottom-0 right-0 w-[9px] h-[9px] rounded-full border-2 border-bg-surface"
+                style={{ background: STATUS_DOT[m.status] }}
+              />
             </div>
-            <div style={{ flex:1, minWidth:0 }}>
-              <p style={{ fontSize:12, fontWeight:700, color:"#f3f4f6", margin:0, lineHeight:1.3 }}>{m.name}</p>
-              <p style={{ fontSize:10, color:"#6b6375", margin:0 }}>{m.role}</p>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-text-h m-0 leading-[1.3]">{m.name}</p>
+              <p className="text-[10px] text-text-secondary m-0">{m.role}</p>
             </div>
           </div>
         ))}

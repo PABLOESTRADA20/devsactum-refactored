@@ -18,21 +18,12 @@ export function AppShell() {
     <NavContext.Provider value={{ activePage, setActivePage }}>
       <ToastProvider>
         {/* Root: full viewport, no overflow */}
-        <div style={{ display:"flex", height:"100dvh", width:"100%", overflow:"hidden", background:"#0e0e0e" }}>
-
-          {/* ── Sidebar ── */}
+        <div className="flex h-dvh w-full overflow-hidden bg-bg">
           <Navbar />
-
-          {/* ── Main column ── */}
-          <div style={{ display:"flex", flexDirection:"column", flex:1, minWidth:0, height:"100%", overflow:"hidden" }}>
+          <div className="flex flex-col flex-1 min-w-0 h-full overflow-hidden">
             <Topbar />
-
-            {/* ── Content row ── */}
-            <div style={{ display:"flex", flex:1, overflow:"hidden" }}>
-              <main
-                style={{ flex:1, overflowY:"auto", overflowX:"hidden" }}
-                className="animate-fade-in"
-              >
+            <div className="flex flex-1 overflow-hidden">
+              <main className="flex-1 overflow-y-auto overflow-x-hidden animate-fade-in">
                 <PageRouter />
               </main>
               {showPanel && <RightPanel />}

@@ -1,20 +1,73 @@
 @import "tailwindcss";
 
-/* ── Design Tokens ── */
+/* ── Design Tokens (Dark — default) ── */
 @theme {
   --color-bg:            #0e0e0e;
   --color-bg-surface:    #131313;
   --color-bg-hover:      #1a1a1f;
   --color-border:        #2e303a;
-  --color-text:          #6b6375;
+  --color-text:          #b0b0c0;
   --color-text-h:        #f3f4f6;
+  --color-text-secondary:#7a7085;
   --color-accent:        #c49aff;
   --color-accent-bg:     rgba(196,154,255,0.12);
   --color-accent-border: rgba(196,154,255,0.3);
   --color-tertiary:      #ff94a8;
   --color-tertiary-bg:   rgba(255,148,168,0.12);
+  --color-tertiary-border: rgba(255,148,168,0.3);
   --color-online:        #3ba55d;
   --color-away:          #f59e0b;
+  --color-danger:        #ef4444;
+  --color-danger-bg:     rgba(239,68,68,0.12);
+  --color-danger-hover:  rgba(239,68,68,0.2);
+  --color-danger-border: rgba(239,68,68,0.3);
+  --color-success:       #4ade80;
+  --color-success-bg:    rgba(74,222,128,0.12);
+  --color-success-border: rgba(74,222,128,0.3);
+  --color-warning:       #f59e0b;
+  --color-warning-bg:    rgba(245,158,11,0.12);
+  --color-warning-border: rgba(245,158,11,0.3);
+
+  --radius-sm:    6px;
+  --radius-md:    8px;
+  --radius-lg:    10px;
+  --radius-xl:    14px;
+  --radius-2xl:   16px;
+  --radius-full:  9999px;
+
+  --text-xs:  10px;
+  --text-sm:  12px;
+  --text-base: 13.5px;
+  --text-lg:  15px;
+  --text-xl:  18px;
+  --text-2xl: 26px;
+}
+
+/* ── Light mode via class ── */
+.light {
+  --color-bg:            #f8f9fa;
+  --color-bg-surface:    #ffffff;
+  --color-bg-hover:      #f1f3f5;
+  --color-border:        #e2e8f0;
+  --color-text:          #334155;
+  --color-text-h:        #0f172a;
+  --color-text-secondary:#64748b;
+  --color-accent:        #8b5cf6;
+  --color-accent-bg:     rgba(139,92,246,0.1);
+  --color-accent-border: rgba(139,92,246,0.25);
+  --color-tertiary:      #e11d48;
+  --color-tertiary-bg:   rgba(225,29,72,0.08);
+  --color-tertiary-border: rgba(225,29,72,0.25);
+  --color-danger:        #dc2626;
+  --color-danger-bg:     rgba(220,38,38,0.08);
+  --color-danger-hover:  rgba(220,38,38,0.15);
+  --color-danger-border: rgba(220,38,38,0.25);
+  --color-success:       #16a34a;
+  --color-success-bg:    rgba(22,163,74,0.08);
+  --color-success-border: rgba(22,163,74,0.25);
+  --color-warning:       #d97706;
+  --color-warning-bg:    rgba(217,119,6,0.08);
+  --color-warning-border: rgba(217,119,6,0.25);
 }
 
 /* ── Reset ── */
@@ -41,24 +94,41 @@ html, body {
 :focus-visible {
   outline: 2px solid var(--color-accent-border);
   outline-offset: 2px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
 }
 
-/* ── Keyframes ── */
-@keyframes fadeIn       { from { opacity:0; transform:translateY(8px) }  to { opacity:1; transform:none } }
-@keyframes slideInLeft  { from { opacity:0; transform:translateX(-12px) } to { opacity:1; transform:none } }
-@keyframes float        { 0%,100%{ transform:translateY(0) }  50%{ transform:translateY(-6px) } }
-@keyframes pulse-slow   { 0%,100%{ opacity:1 }  50%{ opacity:0.4 } }
-@keyframes shimmer      { 0%{ background-position:-200% 0 }  100%{ background-position:200% 0 } }
-@keyframes glow-pulse   { 0%,100%{ box-shadow:0 0 8px rgba(196,154,255,.25) }  50%{ box-shadow:0 0 22px rgba(196,154,255,.55) } }
-@keyframes spin         { to{ transform:rotate(360deg) } }
+/* ── prefers-reduced-motion ── */
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
 
-.animate-fade-in    { animation: fadeIn      0.28s ease both; }
-.animate-slide-in   { animation: slideInLeft 0.22s ease both; }
-.animate-float      { animation: float       3s ease-in-out infinite; }
-.animate-pulse-slow { animation: pulse-slow  1.8s ease-in-out infinite; }
-.animate-glow       { animation: glow-pulse  2.2s ease-in-out infinite; }
-.animate-spin       { animation: spin        0.7s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes fadeIn       { from { opacity:0; transform:translateY(8px) }  to { opacity:1; transform:none } }
+  @keyframes slideInLeft  { from { opacity:0; transform:translateX(-12px) } to { opacity:1; transform:none } }
+  @keyframes float        { 0%,100%{ transform:translateY(0) }  50%{ transform:translateY(-6px) } }
+  @keyframes pulse-slow   { 0%,100%{ opacity:1 }  50%{ opacity:0.4 } }
+  @keyframes shimmer      { 0%{ background-position:-200% 0 }  100%{ background-position:200% 0 } }
+  @keyframes glow-pulse   { 0%,100%{ box-shadow:0 0 8px rgba(196,154,255,.25) }  50%{ box-shadow:0 0 22px rgba(196,154,255,.55) } }
+  @keyframes spin         { to{ transform:rotate(360deg) } }
+
+  .animate-fade-in    { animation: fadeIn      0.28s ease both; }
+  .animate-slide-in   { animation: slideInLeft 0.22s ease both; }
+  .animate-float      { animation: float       3s ease-in-out infinite; }
+  .animate-pulse-slow { animation: pulse-slow  1.8s ease-in-out infinite; }
+  .animate-glow       { animation: glow-pulse  2.2s ease-in-out infinite; }
+  .animate-spin       { animation: spin        0.7s linear infinite; }
+}
 
 /* ── Skeleton loader ── */
 .skeleton {
@@ -76,6 +146,10 @@ html, body {
   background: rgba(19,19,19,0.75);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+}
+
+.light .glass {
+  background: rgba(255,255,255,0.8);
 }
 
 /* ── Code blocks ── */

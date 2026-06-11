@@ -24,9 +24,9 @@ export function NotificationRow({ notification, onRead }: NotificationRowProps) 
     <div
       onClick={onRead}
       className={`
-        group flex items-start gap-4 px-5 py-4 border-b border-[#2e303a] last:border-b-0
-        cursor-pointer transition-all duration-150 hover:bg-[#1a1a1f]
-        ${!notification.read ? "bg-[rgba(196,154,255,0.04)]" : ""}
+        group flex items-start gap-4 px-5 py-4 border-b border-border last:border-b-0
+        cursor-pointer transition-colors duration-150 hover:bg-bg-hover
+        ${!notification.read ? "bg-accent-bg/30" : ""}
       `}
     >
       {/* Avatar con badge de tipo */}
@@ -37,9 +37,8 @@ export function NotificationRow({ notification, onRead }: NotificationRowProps) 
         >
           {notification.actor.initials}
         </div>
-        {/* Type badge — esquina inferior derecha */}
         <div
-          className="absolute -bottom-1 -right-1 w-[22px] h-[22px] rounded-full border-2 border-[#131313] flex items-center justify-center"
+          className="absolute -bottom-1 -right-1 w-[22px] h-[22px] rounded-full border-2 border-bg-surface flex items-center justify-center"
           style={{ background: bg }}
         >
           <Icon size={10} style={{ color }} strokeWidth={2.5} />
@@ -49,23 +48,23 @@ export function NotificationRow({ notification, onRead }: NotificationRowProps) 
       {/* Contenido */}
       <div className="flex-1 min-w-0">
         <p className="text-[13px] leading-[1.55] m-0">
-          <span className="font-bold text-white">{notification.actor.name}</span>
+          <span className="font-bold text-text-h">{notification.actor.name}</span>
           {" "}
-          <span className="text-[#adaaaa]">{label}</span>
+          <span className="text-text-secondary">{label}</span>
         </p>
         {notification.postPreview && (
-          <p className="text-[11px] text-[#767575] m-0 mt-1 truncate max-w-[360px]">
+          <p className="text-[11px] text-text-secondary m-0 mt-1 truncate max-w-[360px]">
             &ldquo;{notification.postPreview}&rdquo;
           </p>
         )}
-        <p className="text-[10px] text-[#767575] m-0 mt-1.5 font-mono tracking-wide">
+        <p className="text-[10px] text-text-secondary m-0 mt-1.5 font-mono tracking-wide">
           {notification.createdAt}
         </p>
       </div>
 
       {/* Dot no leído */}
       {!notification.read && (
-        <div className="w-2 h-2 rounded-full bg-[#c49aff] shrink-0 mt-2 animate-pulse" />
+        <div className="w-2 h-2 rounded-full bg-accent shrink-0 mt-2 animate-pulse" />
       )}
     </div>
   )

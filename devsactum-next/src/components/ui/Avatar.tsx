@@ -39,7 +39,7 @@ export function Avatar({ initials, color, bg, size = "md", shape = "circle", sta
       </div>
       {status && (
         <div
-          className={cn("absolute border-2 border-[#131313] rounded-full", s.dot, s.dotPos)}
+          className={cn("absolute border-2 border-bg-surface rounded-full", s.dot, s.dotPos)}
           style={{ background: STATUS_COLORS[status] }}
         />
       )}

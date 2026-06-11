@@ -29,11 +29,11 @@ export function Modal({ open, onClose, title, size = "md", children }: ModalProp
       style={{ background:"rgba(0,0,0,0.75)", backdropFilter:"blur(6px)" }}
       onClick={e => e.target === e.currentTarget && onClose()}
     >
-      <div className={cn(SIZES[size], "w-full bg-[#131313] border border-[#2e303a] rounded-[16px] shadow-2xl animate-fade-in")}>
+      <div className={cn(SIZES[size], "w-full bg-bg-surface border border-border rounded-2xl shadow-2xl animate-fade-in")}>
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[#2e303a]">
-            <h2 className="text-[15px] font-extrabold text-[#f3f4f6] m-0">{title}</h2>
-            <button onClick={onClose} className="bg-transparent border-none cursor-pointer text-[#6b6375] p-1.5 rounded-md hover:bg-[#1a1a1f] hover:text-[#f3f4f6] transition-colors">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+            <h2 className="text-lg font-extrabold text-text-h m-0">{title}</h2>
+            <button onClick={onClose} className="bg-transparent border-none cursor-pointer text-text-secondary p-1.5 rounded-md hover:bg-bg-hover hover:text-text-h transition-colors">
               <X size={16} strokeWidth={2} />
             </button>
           </div>

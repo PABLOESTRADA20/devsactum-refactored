@@ -12,12 +12,12 @@ interface BadgeProps {
 }
 
 const V: Record<Variant, string> = {
-  accent:   "bg-[rgba(196,154,255,0.15)] text-[#c49aff] border-[rgba(196,154,255,0.3)]",
-  tertiary: "bg-[rgba(255,148,168,0.15)] text-[#ff94a8] border-[rgba(255,148,168,0.3)]",
-  success:  "bg-[rgba(74,222,128,0.12)]  text-[#4ade80] border-[rgba(74,222,128,0.3)]",
-  warning:  "bg-[rgba(245,158,11,0.12)]  text-[#f59e0b] border-[rgba(245,158,11,0.3)]",
-  danger:   "bg-[rgba(239,68,68,0.12)]   text-[#ef4444] border-[rgba(239,68,68,0.3)]",
-  neutral:  "bg-[#1a1a1f] text-[#6b6375] border-[#2e303a]",
+  accent:   "bg-accent-bg text-accent border-accent-border",
+  tertiary: "bg-tertiary-bg text-tertiary border-tertiary-border",
+  success:  "bg-success-bg text-success border-success-border",
+  warning:  "bg-warning-bg text-warning border-warning-border",
+  danger:   "bg-danger-bg text-danger border-danger-border",
+  neutral:  "bg-bg-hover text-text-secondary border-border",
 }
 
 export function Badge({ children, variant = "accent", dot = false, className }: BadgeProps) {

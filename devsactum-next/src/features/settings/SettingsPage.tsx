@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   User, Lock, Bell, Palette, Globe, Shield,
   Eye, EyeOff, Moon, Sun, Monitor, Check,
@@ -96,6 +96,31 @@ export default function SettingsPage() {
   const [fontSize, setFontSize] = useState<"sm" | "md" | "lg">("md")
   const [reducedMotion, setReducedMotion] = useState(false)
 
+  /* Sync theme to DOM + localStorage */
+  useEffect(() => {
+    const root = document.documentElement
+    const applyTheme = (isLight: boolean) => {
+      root.classList.toggle("light", isLight)
+    }
+    localStorage.setItem("ds-theme", theme)
+    if (theme === "light") {
+      applyTheme(true)
+    } else if (theme === "system") {
+      const mq = window.matchMedia("(prefers-color-scheme: light)")
+      applyTheme(mq.matches)
+      const handler = (e: MediaQueryListEvent) => applyTheme(e.matches)
+      mq.addEventListener("change", handler)
+      return () => mq.removeEventListener("change", handler)
+    } else {
+      applyTheme(false)
+    }
+  }, [theme])
+
+  /* Sync reducedMotion to DOM */
+  useEffect(() => {
+    document.documentElement.classList.toggle("reduce-motion", reducedMotion)
+  }, [reducedMotion])
+
   /* Save feedback */
   const [saved, setSaved] = useState(false)
   function handleSave() {
@@ -147,7 +172,7 @@ export default function SettingsPage() {
               <button
                 key={id}
                 onClick={() => setActiveSection(id)}
-                className={`flex items-center gap-2.5 px-3 py-2.5 rounded-[10px] text-[13px] font-semibold text-left border transition-all duration-150 cursor-pointer w-full ${
+                className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-semibold text-left border transition-colors duration-150 cursor-pointer w-full ${
                   activeSection === id
                     ? "bg-accent-bg text-accent border-accent-border"
                     : "text-text border-transparent hover:bg-bg-hover hover:text-text-h"
@@ -160,11 +185,11 @@ export default function SettingsPage() {
           </nav>
 
           <div className="mt-6 pt-4 border-t border-border flex flex-col gap-1">
-            <button className="flex items-center gap-2.5 px-3 py-2.5 rounded-[10px] text-[13px] font-semibold text-text border border-transparent hover:bg-bg-hover hover:text-text-h transition-all duration-150 cursor-pointer w-full">
+            <button className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-semibold text-text border border-transparent hover:bg-bg-hover hover:text-text-h transition-colors duration-150 cursor-pointer w-full">
               <LogOut size={15} strokeWidth={1.8} className="shrink-0 opacity-75" />
               Cerrar sesión
             </button>
-            <button className="flex items-center gap-2.5 px-3 py-2.5 rounded-[10px] text-[13px] font-semibold text-red-400 border border-transparent hover:bg-red-500/10 transition-all duration-150 cursor-pointer w-full">
+            <button className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-semibold text-red-400 border border-transparent hover:bg-red-500/10 transition-colors duration-150 cursor-pointer w-full">
               <Trash2 size={15} strokeWidth={1.8} className="shrink-0" />
               Eliminar cuenta
             </button>
@@ -347,7 +372,7 @@ export default function SettingsPage() {
                       <button
                         key={id}
                         onClick={() => setTheme(id)}
-                        className={`flex flex-col items-center gap-2 py-4 rounded-[10px] border cursor-pointer transition-all duration-150 ${
+                        className={`flex flex-col items-center gap-2 py-4 rounded-lg border cursor-pointer transition-colors duration-150 ${
                           theme === id
                             ? "bg-accent-bg border-accent text-accent"
                             : "bg-bg border-border text-text hover:border-accent-border"
@@ -393,7 +418,7 @@ export default function SettingsPage() {
                       <button
                         key={id}
                         onClick={() => setFontSize(id)}
-                        className={`flex-1 py-2 rounded-[8px] border text-[12px] font-bold cursor-pointer transition-all duration-150 ${
+                        className={`flex-1 py-2 rounded-md border text-sm font-bold cursor-pointer transition-colors duration-150 ${
                           fontSize === id
                             ? "bg-accent-bg text-accent border-accent-border"
                             : "bg-bg text-text border-border hover:border-accent-border"
@@ -445,7 +470,7 @@ export default function SettingsPage() {
                             <div className="w-1.5 h-1.5 rounded-full bg-online" /> Conectado
                           </span>
                         )}
-                        <button className={`border rounded-[8px] px-3.5 py-1.5 text-[11px] font-bold cursor-pointer transition-all duration-150 ${
+                        <button className={`border rounded-md px-3.5 py-1.5 text-[11px] font-bold cursor-pointer transition-colors duration-150 ${
                           connected
                             ? "bg-transparent text-text border-border hover:border-red-500/50 hover:text-red-400"
                             : "bg-accent text-[#1a0033] border-accent hover:opacity-85"
@@ -483,7 +508,7 @@ export default function SettingsPage() {
                 </button>
                 <button
                   onClick={handleSave}
-                  className={`flex items-center gap-1.5 border-none rounded-[8px] px-5 py-2 text-[12px] font-bold cursor-pointer transition-all duration-200 ${
+                  className={`flex items-center gap-1.5 border-none rounded-md px-5 py-2 text-sm font-bold cursor-pointer transition-colors duration-200 ${
                     saved
                       ? "bg-green-500/20 text-green-400"
                       : "bg-accent text-[#1a0033] hover:opacity-85"

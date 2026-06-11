@@ -112,7 +112,7 @@ export default function SavedPage() {
           <button
             key={f.id}
             onClick={() => setFilter(f.id as any)}
-            className={`shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold cursor-pointer border transition-all duration-150 ${
+            className={`shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold cursor-pointer border transition-colors duration-150 ${
               filter === f.id
                 ? "bg-accent text-[#1a0033] border-accent"
                 : "bg-bg-surface text-text border-border hover:border-accent-border"
@@ -140,7 +140,7 @@ export default function SavedPage() {
             return (
               <div
                 key={item.id}
-                className="bg-bg-surface border border-border rounded-[14px] p-5 hover:border-accent-border transition-all duration-200 animate-fade-in group"
+                className="bg-bg-surface border border-border rounded-xl p-5 hover:border-accent-border transition-colors duration-200 animate-fade-in group"
                 style={{ animationDelay: `${idx * 40}ms` }}
               >
                 <div className="flex items-start gap-4">
@@ -157,7 +157,7 @@ export default function SavedPage() {
                       </div>
                       <button
                         onClick={() => removeItem(item.id)}
-                        className="opacity-0 group-hover:opacity-100 bg-transparent border-none cursor-pointer text-text hover:text-tertiary transition-all p-1 shrink-0"
+                        className="opacity-0 group-hover:opacity-100 bg-transparent border-none cursor-pointer text-text hover:text-tertiary transition-opacity p-1 shrink-0"
                       >
                         <Trash2 size={13} strokeWidth={1.8} />
                       </button>
