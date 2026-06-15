@@ -1,35 +1,34 @@
 "use client"
 import React from "react"
-import { cn } from "@/src/lib/utils"
 
-type Variant = "accent" | "tertiary" | "success" | "warning" | "danger" | "neutral"
+type Variant = "default" | "success" | "warning" | "danger" | "info" | "accent" | "premium"
 
-interface BadgeProps {
-  children: React.ReactNode
+interface Props {
   variant?: Variant
-  dot?: boolean
   className?: string
+  children: React.ReactNode
 }
 
-const V: Record<Variant, string> = {
-  accent:   "bg-accent-bg text-accent border-accent-border",
-  tertiary: "bg-tertiary-bg text-tertiary border-tertiary-border",
-  success:  "bg-success-bg text-success border-success-border",
-  warning:  "bg-warning-bg text-warning border-warning-border",
-  danger:   "bg-danger-bg text-danger border-danger-border",
-  neutral:  "bg-bg-hover text-text-secondary border-border",
+const variantStyles: Record<Variant, string> = {
+  default: "bg-[var(--bg-hover)] text-[var(--text-soft)] border-[var(--border)]",
+  success: "bg-[var(--success-soft)] text-[var(--success)] border-[var(--success)]/30",
+  warning: "bg-[var(--warning-soft)] text-[var(--warning)] border-[var(--warning)]/30",
+  danger:   "bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger)]/30",
+  info:    "bg-[var(--secondary-soft)] text-[var(--secondary)] border-[var(--secondary)]/30",
+  accent:  "bg-[var(--primary-soft)] text-[var(--primary)] border-[var(--primary-border)]",
+  premium: "bg-gradient-to-r from-[var(--primary-soft)] to-[var(--secondary-soft)] text-[var(--primary)] border-[var(--primary-border)]",
 }
 
-export function Badge({ children, variant = "accent", dot = false, className }: BadgeProps) {
+export function Badge({ variant = "default", className = "", children }: Props) {
   return (
     <span
-      className={cn(
-        "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full",
-        "text-[10px] font-extrabold uppercase tracking-[1px] border",
-        V[variant], className
-      )}
+      className={`
+        inline-flex items-center text-[9px] font-bold uppercase tracking-[1px]
+        px-2.5 py-0.5 rounded-full border
+        ${variantStyles[variant]}
+        ${className}
+      `}
     >
-      {dot && <span className="w-1.5 h-1.5 rounded-full bg-current" />}
       {children}
     </span>
   )

@@ -1,9 +1,19 @@
 "use client"
 
-import React, { useState } from "react"
-import { Terminal, AtSign, Lock, Eye, EyeOff, GitBranch, Sparkles, ArrowRight } from "lucide-react"
+import React, { useState, useEffect } from "react"
+import { Terminal, AtSign, Lock, Eye, EyeOff, ArrowRight } from "lucide-react"
 import { useNav } from "@/src/store/nav"
 import { useToast } from "@/src/components/ui/Toast"
+import { Button } from "@/src/components/ui/Button"
+
+const CODE_LINES = [
+  "> git init devsanctum",
+  "> npm create @devs",
+  "> Connecting to global network...",
+  "> Authenticating peer identity...",
+  ">  \u2713 Dev environment ready",
+  "> $ Welcome to Devsanctum",
+]
 
 export default function Login() {
   const { setActivePage } = useNav()
@@ -12,6 +22,14 @@ export default function Login() {
   const [tab, setTab] = useState<"signin" | "signup">("signin")
   const [form, setForm] = useState({ email: "", password: "", name: "" })
   const [loading, setLoading] = useState(false)
+  const [codeIndex, setCodeIndex] = useState(0)
+
+  useEffect(() => {
+    if (codeIndex < CODE_LINES.length) {
+      const t = setTimeout(() => setCodeIndex(i => i + 1), 600)
+      return () => clearTimeout(t)
+    }
+  }, [codeIndex])
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -28,170 +46,165 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg relative overflow-hidden p-6 w-full">
-      {/* Background glows */}
-      <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-[rgba(196,154,255,0.06)] rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-[20%] -right-[10%] w-[40%] h-[40%] bg-[rgba(255,148,168,0.04)] rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[rgba(196,154,255,0.03)] rounded-full blur-[120px] pointer-events-none" />
+    <div className="min-h-screen flex bg-[var(--bg)] w-full overflow-hidden">
+      <div className="hidden lg:flex flex-1 flex-col justify-center px-16 relative overflow-hidden bg-gradient-to-br from-[var(--bg-surface)] to-[var(--bg)]">
+        <div className="absolute -top-[30%] -left-[20%] w-[70%] h-[70%] bg-[var(--primary)]/5 rounded-full blur-[120px] animate-gradient-shift" />
+        <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] bg-[var(--secondary)]/4 rounded-full blur-[100px]" />
 
-      <div className="w-full max-w-[420px] relative z-10 animate-fade-in">
-        {/* Logo */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="w-[56px] h-[56px] rounded-[14px] bg-accent-bg border border-accent-border flex items-center justify-center mb-4 animate-glow">
-            <Terminal size={24} className="text-accent" strokeWidth={1.8} />
+        <div className="relative z-10 max-w-[480px]">
+          <div className="w-14 h-14 rounded-[var(--radius-2xl)] bg-[var(--primary-soft)] border border-[var(--primary-border)] flex items-center justify-center mb-6 glow-primary">
+            <Terminal size={24} className="text-[var(--primary)]" strokeWidth={1.8} />
           </div>
-          <h1 className="text-[24px] font-black tracking-tight text-accent m-0">Devsanctum</h1>
-          <p className="text-[13px] text-text mt-1.5 opacity-70">
-            {tab === "signin" ? "Bienvenido de vuelta" : "Crea tu cuenta de dev"}
+          <h1 className="gradient-text text-[44px] font-black tracking-[-2px] leading-[1.1] mb-4">
+            Donde los devs<br />
+            construyen juntos.
+          </h1>
+          <p className="text-base text-[var(--text-soft)] leading-[1.8] mb-8 max-w-[380px]">
+            Comparte c\u00f3digo, conecta con builders globales y haz crecer tu reputaci\u00f3n como desarrollador.
           </p>
-        </div>
 
-        {/* Tabs */}
-        <div className="flex bg-bg-surface border border-border rounded-[12px] p-1 mb-6">
-          {(["signin", "signup"] as const).map(t => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`flex-1 py-2 text-sm font-bold rounded-lg cursor-pointer border-none transition-colors duration-200 ${
-                tab === t ? "bg-accent text-[#1a0033]" : "bg-transparent text-text hover:text-text-h"
-              }`}
-            >
-              {t === "signin" ? "Iniciar sesión" : "Registrarse"}
-            </button>
-          ))}
+          <div className="bg-[var(--color-black)] border border-[var(--border)] rounded-[var(--radius-2xl)] p-5 font-mono text-xs">
+            <div className="flex gap-1.5 mb-3">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+            </div>
+            {CODE_LINES.slice(0, codeIndex).map((line, i) => (
+              <p key={i} className="m-0 mb-1 animate-fade-in">
+                {line.startsWith(">") ? (
+                  <span className="text-[var(--primary)]">{line}</span>
+                ) : line.startsWith(" ") ? (
+                  <span className="text-[var(--secondary)]">{line}</span>
+                ) : (
+                  <span className="text-[var(--text-h)]">{line}</span>
+                )}
+              </p>
+            ))}
+            {codeIndex < CODE_LINES.length && (
+              <span className="animate-cursor text-[var(--text-muted)]">_</span>
+            )}
+          </div>
         </div>
+      </div>
 
-        {/* Card */}
-        <div className="bg-bg-surface border border-border rounded-[18px] p-7">
-          <form onSubmit={handleSubmit}>
-            {/* Name (signup only) */}
+      <div className="flex-1 flex items-center justify-center px-8 py-12">
+        <div className="w-full max-w-[420px]">
+          <div className="flex items-center gap-2 mb-8 lg:hidden">
+            <div className="w-10 h-10 rounded-[var(--radius-lg)] bg-[var(--primary-soft)] border border-[var(--primary-border)] flex items-center justify-center">
+              <Terminal size={18} className="text-[var(--primary)]" strokeWidth={1.8} />
+            </div>
+            <span className="text-lg font-black gradient-text">Devsanctum</span>
+          </div>
+
+          <div className="flex gap-1 mb-8 bg-[var(--bg-surface)] border-2 border-[var(--border)] rounded-[var(--radius-lg)] p-1">
+            {(["signin", "signup"] as const).map(t => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={`flex-1 py-2.5 rounded-[var(--radius-md)] text-sm font-bold cursor-pointer border-none transition-all duration-[var(--duration-fast)] ${
+                  tab === t
+                    ? "bg-[var(--primary)] text-white shadow-[var(--shadow-glow)]"
+                    : "bg-transparent text-[var(--text-soft)] hover:text-[var(--text-h)]"
+                }`}
+              >
+                {t === "signin" ? "Iniciar sesi\u00f3n" : "Crear cuenta"}
+              </button>
+            ))}
+          </div>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {tab === "signup" && (
-              <div className="mb-4 animate-fade-in">
-                <label className="block text-[10px] font-extrabold uppercase tracking-[1.5px] text-text mb-2">
+              <div>
+                <label className="text-[10px] font-extrabold uppercase tracking-[1.5px] text-[var(--text-soft)] mb-1.5 block">
                   Nombre completo
                 </label>
-                <input
-                  type="text"
-                  placeholder="Alex Volkov"
-                  value={form.name}
-                  onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                  className="w-full h-[44px] px-[14px] bg-bg border border-border rounded-[9px] text-[13px] text-text-h outline-none transition-colors focus:border-accent-border"
-                />
+                <div className="relative">
+                  <AtSign size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" strokeWidth={1.8} />
+                  <input
+                    value={form.name}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    placeholder="Tu nombre"
+                    className="w-full h-[44px] pl-[38px] pr-3.5 bg-[var(--input-bg)] border-2 border-[var(--input-border)] rounded-[var(--radius-lg)] text-sm text-[var(--input-text)] outline-none transition-all focus:border-[var(--input-focus-border)] focus:shadow-[var(--shadow-glow)] placeholder:text-[var(--text-muted)]"
+                  />
+                </div>
               </div>
             )}
 
-            {/* Email */}
-            <div className="mb-4">
-              <label className="block text-[10px] font-extrabold uppercase tracking-[1.5px] text-text mb-2">
-                {tab === "signin" ? "Email o usuario" : "Email"}
+            <div>
+              <label className="text-[10px] font-extrabold uppercase tracking-[1.5px] text-[var(--text-soft)] mb-1.5 block">
+                Correo electr\u00f3nico
               </label>
               <div className="relative">
-                <AtSign size={14} className="absolute left-[13px] top-1/2 -translate-y-1/2 text-text opacity-50 pointer-events-none" strokeWidth={1.8} />
+                <AtSign size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" strokeWidth={1.8} />
                 <input
-                  type="text"
-                  placeholder="dev@sanctum.sh"
+                  type="email"
                   value={form.email}
-                  onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                  className="w-full h-[44px] pl-[40px] pr-[14px] bg-bg border border-border rounded-[9px] text-[13px] text-text-h outline-none transition-colors focus:border-accent-border"
+                  onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                  placeholder="dev@ejemplo.com"
+                  className="w-full h-[44px] pl-[38px] pr-3.5 bg-[var(--input-bg)] border-2 border-[var(--input-border)] rounded-[var(--radius-lg)] text-sm text-[var(--input-text)] outline-none transition-all focus:border-[var(--input-focus-border)] focus:shadow-[var(--shadow-glow)] placeholder:text-[var(--text-muted)]"
                 />
               </div>
             </div>
 
-            {/* Password */}
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <label className="text-[10px] font-extrabold uppercase tracking-[1.5px] text-text">
-                  Contraseña
-                </label>
-                {tab === "signin" && (
-                  <button type="button" className="text-[10px] font-bold text-accent bg-transparent border-none cursor-pointer">
-                    ¿Olvidaste tu contraseña?
-                  </button>
-                )}
-              </div>
+            <div>
+              <label className="text-[10px] font-extrabold uppercase tracking-[1.5px] text-[var(--text-soft)] mb-1.5 block">
+                Contrase\u00f1a
+              </label>
               <div className="relative">
-                <Lock size={14} className="absolute left-[13px] top-1/2 -translate-y-1/2 text-text opacity-50 pointer-events-none" strokeWidth={1.8} />
+                <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" strokeWidth={1.8} />
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
                   value={form.password}
-                  onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-                  className="w-full h-[44px] pl-[40px] pr-[44px] bg-bg border border-border rounded-[9px] text-[13px] text-text-h outline-none transition-colors focus:border-accent-border"
+                  onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+                  placeholder="••••••••"
+                  className="w-full h-[44px] pl-[38px] pr-10 bg-[var(--input-bg)] border-2 border-[var(--input-border)] rounded-[var(--radius-lg)] text-sm text-[var(--input-text)] outline-none transition-all focus:border-[var(--input-focus-border)] focus:shadow-[var(--shadow-glow)] placeholder:text-[var(--text-muted)]"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-[13px] top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-text flex"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-[var(--text-muted)] hover:text-[var(--text-h)] transition-colors"
                 >
                   {showPassword ? <EyeOff size={14} strokeWidth={1.8} /> : <Eye size={14} strokeWidth={1.8} />}
                 </button>
               </div>
             </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full h-[44px] rounded-lg border-none flex items-center justify-center gap-2 text-sm font-extrabold transition-colors duration-150 ${
-                loading ? "bg-accent/70 cursor-not-allowed text-[#1a0033]" : "bg-accent text-[#1a0033] cursor-pointer hover:opacity-85"
-              }`}
-            >
-              {loading ? (
-                <span className="animate-pulse-slow">Entrando...</span>
-              ) : (
-                <>
-                  {tab === "signin" ? "Iniciar sesión" : "Crear cuenta"}
-                  <ArrowRight size={14} strokeWidth={2.5} />
-                </>
-              )}
-            </button>
+            <Button type="submit" size="lg" loading={loading} className="w-full mt-2">
+              {tab === "signin" ? "Entrar" : "Crear cuenta"} <ArrowRight size={16} strokeWidth={2.5} />
+            </Button>
           </form>
 
-          {/* Divider */}
-          <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px bg-border" />
-            <span className="text-[9px] font-bold uppercase tracking-[2px] text-text opacity-50">O continúa con</span>
-            <div className="flex-1 h-px bg-border" />
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-[var(--border)]" />
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="px-3 bg-[var(--bg)] text-[var(--text-muted)] font-semibold">O contin\u00faa con</span>
+            </div>
           </div>
 
-          {/* Social */}
-          <div className="grid grid-cols-2 gap-2.5">
-            {[
-              { label: "Google", icon: (
-                <svg width="16" height="16" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-              )},
-              { label: "GitHub", icon: (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-text-h">
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                </svg>
-              )},
-            ].map(({ label, icon }) => (
+          <div className="flex gap-3">
+            {["GitHub", "Google", "Twitter"].map(provider => (
               <button
-                key={label}
-                type="button"
-                className="flex items-center justify-center gap-2 h-[40px] bg-bg border border-border rounded-[9px] cursor-pointer text-[12px] font-semibold text-text-h transition-colors hover:border-accent-border"
+                key={provider}
+                className="flex-1 h-[42px] bg-[var(--bg-surface)] border-2 border-[var(--border)] rounded-[var(--radius-lg)] text-xs font-bold text-[var(--text-soft)] cursor-pointer hover:border-[var(--primary-border)] hover:text-[var(--primary)] transition-all"
               >
-                {icon} {label}
+                {provider}
               </button>
             ))}
           </div>
-        </div>
 
-        <p className="text-center text-[12px] text-text mt-5 opacity-70">
-          {tab === "signin" ? "¿No tienes cuenta? " : "¿Ya tienes cuenta? "}
-          <button
-            type="button"
-            className="bg-transparent border-none cursor-pointer text-accent font-bold text-[12px]"
-            onClick={() => setTab(tab === "signin" ? "signup" : "signin")}
-          >
-            {tab === "signin" ? "Regístrate gratis" : "Inicia sesión"}
-          </button>
-        </p>
+          <p className="text-xs text-[var(--text-muted)] text-center mt-6 leading-[1.6]">
+            Al continuar, aceptas nuestros{" "}
+            <button className="bg-transparent border-none text-[var(--primary)] font-bold cursor-pointer hover:underline p-0">
+              T\u00e9rminos
+            </button>{" "}
+            y{" "}
+            <button className="bg-transparent border-none text-[var(--primary)] font-bold cursor-pointer hover:underline p-0">
+              Privacidad
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   )

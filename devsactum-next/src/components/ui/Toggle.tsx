@@ -1,35 +1,38 @@
 "use client"
 import React from "react"
-import { cn } from "@/src/lib/utils"
 
-interface ToggleProps {
+interface Props {
   enabled: boolean
   onChange: () => void
   size?: "sm" | "md"
 }
 
-export function Toggle({ enabled, onChange, size = "md" }: ToggleProps) {
+export function Toggle({ enabled, onChange, size = "md" }: Props) {
+  const h = size === "md" ? "h-[22px]" : "h-[18px]"
+  const w = size === "md" ? "w-10" : "w-8"
+  const dot = size === "md" ? "w-4 h-4" : "w-3 h-3"
+  const onTranslate = size === "md" ? "translate-x-[18px]" : "translate-x-[14px]"
+
   return (
     <button
       onClick={onChange}
-      role="switch"
+      className={`
+        relative ${h} ${w} rounded-full border-2 transition-all duration-[var(--duration-fast)] ease-[var(--ease-out)] cursor-pointer shrink-0
+        ${enabled
+          ? "bg-[var(--primary)] border-[var(--primary)]"
+          : "bg-[var(--bg-hover)] border-[var(--border)]"
+        }
+        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]
+      `}
       aria-checked={enabled}
-      className={cn(
-        "relative rounded-full border transition-colors duration-200 cursor-pointer shrink-0",
-        size === "md" ? "w-10 h-[22px]" : "w-8 h-[18px]",
-        enabled ? "bg-accent border-accent" : "bg-bg-hover border-border"
-      )}
+      role="switch"
     >
       <div
-        className={cn(
-          "absolute bg-white rounded-full transition-transform duration-200",
-          size === "md" ? "w-4 h-4 top-[3px]" : "w-3 h-3 top-[2.5px]"
-        )}
-        style={{
-          transform: enabled
-            ? `translateX(${size === "md" ? 18 : 14}px)`
-            : "translateX(3px)",
-        }}
+        className={`
+          absolute top-[2px] left-[2px] ${dot} rounded-full bg-white
+          transition-transform duration-[var(--duration-fast)] ease-[var(--ease-spring)]
+          ${enabled ? onTranslate : "translate-x-0"}
+        `}
       />
     </button>
   )

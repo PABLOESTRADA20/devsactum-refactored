@@ -1,27 +1,50 @@
 "use client"
 import React from "react"
-import { cn } from "@/src/lib/utils"
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  hover?: boolean
-  accent?: boolean
-  padding?: "none" | "sm" | "md" | "lg"
+type Variant = "default" | "glass" | "bento" | "interactive" | "neo"
+
+interface Props {
+  variant?: Variant
+  className?: string
+  children: React.ReactNode
+  onClick?: () => void
+  style?: React.CSSProperties
 }
 
-const PAD = { none:"", sm:"p-4", md:"p-5", lg:"p-7" }
+const variantStyles: Record<Variant, string> = {
+  default:
+    "bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--radius-xl)]",
+  glass:
+    "glass rounded-[var(--radius-xl)]",
+  bento:
+    "bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-md)]",
+  interactive:
+    "bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--radius-xl)] cursor-pointer hover:border-[var(--card-hover-border)] hover:shadow-[var(--shadow-glow)] hover:-translate-y-0.5 transition-all duration-[var(--duration-fast)] ease-[var(--ease-out)]",
+  neo:
+    "bg-[var(--card-bg)] neo-border rounded-[var(--radius-lg)]",
+}
 
-export function Card({ hover, accent, padding = "md", className, children, ...props }: CardProps) {
+export function Card({ variant = "default", className = "", children, onClick, style }: Props) {
+  const Comp = onClick ? "button" : "div"
   return (
-    <div
-      className={cn(
-        "bg-bg-surface border border-border rounded-xl",
-        hover && "transition-colors duration-200 cursor-pointer hover:border-accent-border",
-        accent && "border-accent-border bg-accent-bg",
-        PAD[padding], className
-      )}
-      {...props}
+    <Comp
+      onClick={onClick}
+      className={`${variantStyles[variant]} ${onClick ? "text-left w-full" : ""} ${className}`}
+      style={style}
     >
       {children}
-    </div>
+    </Comp>
   )
+}
+
+export function CardHeader({ className = "", children }: { className?: string; children: React.ReactNode }) {
+  return <div className={`px-5 pt-5 pb-0 ${className}`}>{children}</div>
+}
+
+export function CardContent({ className = "", children }: { className?: string; children: React.ReactNode }) {
+  return <div className={`px-5 py-5 ${className}`}>{children}</div>
+}
+
+export function CardFooter({ className = "", children }: { className?: string; children: React.ReactNode }) {
+  return <div className={`px-5 py-4 border-t border-[var(--border)] ${className}`}>{children}</div>
 }

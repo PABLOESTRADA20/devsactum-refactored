@@ -1,54 +1,53 @@
 "use client"
 import React, { forwardRef } from "react"
-import { cn } from "@/src/lib/utils"
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   error?: string
-  hint?: string
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
+  icon?: React.ReactNode
+  right?: React.ReactNode
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, hint, leftIcon, rightIcon, className, ...props }, ref) => {
+export const Input = forwardRef<HTMLInputElement, Props>(
+  ({ label, error, icon, right, className = "", ...props }, ref) => {
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label className="text-xs font-extrabold uppercase tracking-[1.5px] text-text-secondary">
+          <label className="text-[10px] font-extrabold uppercase tracking-[1.5px] text-[var(--text-soft)]">
             {label}
           </label>
         )}
         <div className="relative">
-          {leftIcon && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">
-              {leftIcon}
-            </div>
+          {icon && (
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none">
+              {icon}
+            </span>
           )}
           <input
             ref={ref}
-            className={cn(
-              "w-full h-10 bg-bg border rounded-md text-sm text-text-h",
-              "outline-none transition-colors duration-150",
-              "placeholder:text-text-secondary placeholder:opacity-60",
-              "focus:border-accent-border focus:shadow-[0_0_0_3px_rgba(196,154,255,0.08)]",
-              error ? "border-danger-border" : "border-border",
-              leftIcon  ? "pl-9"   : "px-3.5",
-              rightIcon ? "pr-9"   : "pr-3.5",
-              className
-            )}
+            className={`
+              w-full h-[44px] bg-[var(--input-bg)] border-2 border-[var(--input-border)]
+              rounded-[var(--radius-lg)] text-sm text-[var(--input-text)]
+              outline-none transition-all duration-[var(--duration-fast)]
+              placeholder:text-[var(--text-muted)]
+              focus:border-[var(--input-focus-border)] focus:shadow-[var(--shadow-glow)]
+              ${icon ? "pl-[38px]" : "px-3.5"}
+              ${right ? "pr-[38px]" : "px-3.5"}
+              ${error ? "!border-[var(--danger)]" : ""}
+              ${className}
+            `}
             {...props}
           />
-          {rightIcon && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary">
-              {rightIcon}
-            </div>
+          {right && (
+            <span className="absolute right-2 top-1/2 -translate-y-1/2">{right}</span>
           )}
         </div>
-        {error && <p className="text-xs text-danger">{error}</p>}
-        {hint && !error && <p className="text-xs text-text-secondary opacity-70">{hint}</p>}
+        {error && (
+          <span className="text-[11px] font-medium text-[var(--danger)] mt-0.5">{error}</span>
+        )}
       </div>
     )
   }
 )
+
 Input.displayName = "Input"

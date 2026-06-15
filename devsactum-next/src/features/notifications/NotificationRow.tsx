@@ -24,12 +24,11 @@ export function NotificationRow({ notification, onRead }: NotificationRowProps) 
     <div
       onClick={onRead}
       className={`
-        group flex items-start gap-4 px-5 py-4 border-b border-border last:border-b-0
-        cursor-pointer transition-colors duration-150 hover:bg-bg-hover
-        ${!notification.read ? "bg-accent-bg/30" : ""}
+        group flex items-start gap-4 px-5 py-4 border-b border-[var(--border)] last:border-b-0
+        cursor-pointer transition-colors duration-150 hover:bg-[var(--bg-hover)]
+        ${!notification.read ? "bg-[var(--primary-soft)]/30" : ""}
       `}
     >
-      {/* Avatar con badge de tipo */}
       <div className="relative shrink-0 mt-0.5">
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center text-[13px] font-bold text-white"
@@ -38,33 +37,31 @@ export function NotificationRow({ notification, onRead }: NotificationRowProps) 
           {notification.actor.initials}
         </div>
         <div
-          className="absolute -bottom-1 -right-1 w-[22px] h-[22px] rounded-full border-2 border-bg-surface flex items-center justify-center"
+          className="absolute -bottom-1 -right-1 w-[22px] h-[22px] rounded-full border-2 border-[var(--bg-surface)] flex items-center justify-center"
           style={{ background: bg }}
         >
           <Icon size={10} style={{ color }} strokeWidth={2.5} />
         </div>
       </div>
 
-      {/* Contenido */}
       <div className="flex-1 min-w-0">
         <p className="text-[13px] leading-[1.55] m-0">
-          <span className="font-bold text-text-h">{notification.actor.name}</span>
+          <span className="font-bold text-[var(--text-h)]">{notification.actor.name}</span>
           {" "}
-          <span className="text-text-secondary">{label}</span>
+          <span className="text-[var(--text-soft)]">{label}</span>
         </p>
         {notification.postPreview && (
-          <p className="text-[11px] text-text-secondary m-0 mt-1 truncate max-w-[360px]">
+          <p className="text-[11px] text-[var(--text-soft)] m-0 mt-1 truncate max-w-[360px]">
             &ldquo;{notification.postPreview}&rdquo;
           </p>
         )}
-        <p className="text-[10px] text-text-secondary m-0 mt-1.5 font-mono tracking-wide">
+        <p className="text-[10px] text-[var(--text-soft)] m-0 mt-1.5 font-mono tracking-wide">
           {notification.createdAt}
         </p>
       </div>
 
-      {/* Dot no leído */}
       {!notification.read && (
-        <div className="w-2 h-2 rounded-full bg-accent shrink-0 mt-2 animate-pulse" />
+        <div className="w-2 h-2 rounded-full bg-[var(--primary)] shrink-0 mt-2 animate-pulse" />
       )}
     </div>
   )

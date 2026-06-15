@@ -1,56 +1,66 @@
 "use client"
 import React from "react"
-import { cn } from "@/src/lib/utils"
+import { Loader2 } from "lucide-react"
 
 type Variant = "primary" | "secondary" | "ghost" | "danger" | "outline"
-type Size    = "xs" | "sm" | "md" | "lg"
+type Size = "sm" | "md" | "lg"
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant
   size?: Size
   loading?: boolean
   icon?: React.ReactNode
-  iconRight?: React.ReactNode
-  fullWidth?: boolean
 }
 
-const V: Record<Variant, string> = {
-  primary:   "bg-accent text-[#1a0033] hover:opacity-85 border-accent",
-  secondary: "bg-bg-hover text-text-h hover:bg-border border-border",
-  ghost:     "bg-transparent text-text-secondary hover:bg-bg-hover hover:text-text-h border-transparent",
-  danger:    "bg-danger-bg text-danger hover:bg-danger-hover border-danger-border",
-  outline:   "bg-transparent text-accent hover:bg-accent-bg border-accent-border",
+const variantStyles: Record<Variant, string> = {
+  primary:
+    "bg-[var(--primary)] text-white border-2 border-[var(--primary)] hover:brightness-110 active:scale-[0.97] shadow-[var(--shadow-glow)]",
+  secondary:
+    "bg-[var(--secondary)] text-[var(--color-black)] border-2 border-[var(--secondary)] hover:brightness-110 active:scale-[0.97]",
+  ghost:
+    "bg-transparent text-[var(--text-h)] border-2 border-transparent hover:bg-[var(--bg-hover)] active:bg-[var(--bg-surface-2)]",
+  danger:
+    "bg-[var(--danger-soft)] text-[var(--danger)] border-2 border-[var(--danger)] hover:bg-[var(--danger-hover)] active:scale-[0.97]",
+  outline:
+    "bg-transparent text-[var(--text-h)] border-2 border-[var(--border)] hover:border-[var(--primary-border)] hover:text-[var(--primary)] active:bg-[var(--bg-hover)] active:scale-[0.97]",
 }
 
-const S: Record<Size, string> = {
-  xs: "h-6  px-2.5 text-xs    gap-1   rounded-md",
-  sm: "h-8  px-3.5 text-sm    gap-1.5 rounded-md",
-  md: "h-9  px-4   text-sm    gap-2   rounded-md",
-  lg: "h-11 px-5   text-base  gap-2.5 rounded-lg",
+const sizeStyles: Record<Size, string> = {
+  sm: "px-3 py-1.5 text-xs gap-1.5 rounded-[var(--radius-md)]",
+  md: "px-4 py-2 text-sm gap-2 rounded-[var(--radius-lg)]",
+  lg: "px-6 py-3 text-base gap-2.5 rounded-[var(--radius-lg)]",
 }
 
 export function Button({
-  variant = "primary", size = "md", loading = false,
-  icon, iconRight, fullWidth = false,
-  children, className, disabled, ...props
-}: ButtonProps) {
+  variant = "primary",
+  size = "md",
+  loading = false,
+  icon,
+  disabled,
+  className = "",
+  children,
+  ...props
+}: Props) {
   return (
     <button
       disabled={disabled || loading}
-      className={cn(
-        "inline-flex items-center justify-center font-bold border cursor-pointer select-none",
-        "transition-colors duration-150 active:scale-[0.97]",
-        "disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none",
-        V[variant], S[size],
-        fullWidth && "w-full",
-        className
-      )}
+      className={`
+        inline-flex items-center justify-center font-bold cursor-pointer
+        transition-all duration-[var(--duration-fast)] ease-[var(--ease-out)]
+        disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:brightness-100 disabled:active:scale-100
+        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]
+        ${variantStyles[variant]}
+        ${sizeStyles[size]}
+        ${className}
+      `}
       {...props}
     >
-      {loading
-        ? <span className="w-3.5 h-3.5 rounded-full border-2 border-current border-t-transparent animate-spin" />
-        : <>{icon && <span className="shrink-0">{icon}</span>}{children}{iconRight && <span className="shrink-0">{iconRight}</span>}</>
-      }
+      {loading ? (
+        <Loader2 size={size === "sm" ? 12 : 14} className="animate-spin" />
+      ) : icon ? (
+        <span className="shrink-0">{icon}</span>
+      ) : null}
+      {children}
     </button>
   )
 }

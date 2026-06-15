@@ -1,46 +1,64 @@
 "use client"
 import React from "react"
-import { cn } from "@/src/lib/utils"
-import { STATUS_COLORS } from "@/src/constants"
 
-type Size   = "xs" | "sm" | "md" | "lg" | "xl"
-type Shape  = "circle" | "rounded"
-type Status = "online" | "away" | "offline"
+type Size = "sm" | "md" | "lg" | "xl"
+type Shape = "circle" | "rounded" | "square"
 
-interface AvatarProps {
+interface Props {
   initials: string
-  color: string
-  bg: string
+  color?: string
+  bg?: string
   size?: Size
   shape?: Shape
-  status?: Status
   className?: string
+  online?: boolean
 }
 
-const SIZES: Record<Size, { outer: string; text: string; dot: string; dotPos: string }> = {
-  xs: { outer:"w-6 h-6",   text:"text-[9px]",  dot:"w-2 h-2",     dotPos:"-bottom-0.5 -right-0.5" },
-  sm: { outer:"w-8 h-8",   text:"text-[10px]", dot:"w-2.5 h-2.5", dotPos:"-bottom-0.5 -right-0.5" },
-  md: { outer:"w-10 h-10", text:"text-[12px]", dot:"w-3 h-3",     dotPos:"bottom-0 right-0"        },
-  lg: { outer:"w-12 h-12", text:"text-[14px]", dot:"w-3.5 h-3.5", dotPos:"bottom-0 right-0"        },
-  xl: { outer:"w-16 h-16", text:"text-[20px]", dot:"w-4 h-4",     dotPos:"bottom-0.5 right-0.5"    },
+const sizeMap: Record<Size, string> = {
+  sm: "w-8 h-8 text-[10px]",
+  md: "w-10 h-10 text-[12px]",
+  lg: "w-12 h-12 text-[14px]",
+  xl: "w-[100px] h-[100px] text-[32px]",
 }
 
-export function Avatar({ initials, color, bg, size = "md", shape = "circle", status, className }: AvatarProps) {
-  const s = SIZES[size]
-  const r = shape === "circle" ? "rounded-full" : "rounded-[8px]"
+const shapeMap: Record<Shape, string> = {
+  circle: "rounded-full",
+  rounded: "rounded-[var(--radius-lg)]",
+  square: "rounded-[var(--radius-md)]",
+}
 
+export function Avatar({
+  initials,
+  color,
+  bg,
+  size = "md",
+  shape = "circle",
+  className = "",
+  online,
+}: Props) {
   return (
-    <div className={cn("relative shrink-0 inline-block", className)}>
+    <div className="relative inline-flex shrink-0 group">
       <div
-        className={cn(s.outer, r, "flex items-center justify-center font-bold")}
-        style={{ background: bg, color }}
+        className={`
+          flex items-center justify-center font-extrabold
+          ${sizeMap[size]} ${shapeMap[shape]}
+          transition-transform duration-[var(--duration-fast)] group-hover:scale-105
+          ${className}
+        `}
+        style={{
+          background: bg || "var(--primary-soft)",
+          color: color || "var(--primary)",
+        }}
       >
-        <span className={s.text}>{initials}</span>
+        {initials}
       </div>
-      {status && (
-        <div
-          className={cn("absolute border-2 border-bg-surface rounded-full", s.dot, s.dotPos)}
-          style={{ background: STATUS_COLORS[status] }}
+      {online !== undefined && (
+        <span
+          className={`
+            absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-[var(--bg)]
+            transition-transform duration-[var(--duration-fast)]
+            ${online ? "bg-[var(--online)]" : "bg-[var(--offline)]"}
+          `}
         />
       )}
     </div>

@@ -1,8 +1,4 @@
 import type { Page } from "@/src/types"
-import {
-  Hash, Compass, Users, Bookmark, MessageCircle,
-  User, Settings, Bell,
-} from "lucide-react"
 
 // ─── Nav sections ─────────────────────────────────────────────────────────────
 
