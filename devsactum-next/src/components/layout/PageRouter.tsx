@@ -12,6 +12,7 @@ const NotificationsPage = dynamic(() => import("@/src/features/notifications/Not
 const SettingsPage      = dynamic(() => import("@/src/features/settings/SettingsPage"),          { ssr:false })
 const SavedPage         = dynamic(() => import("@/src/features/saved/SavedPage"),                { ssr:false })
 const Login             = dynamic(() => import("@/src/features/auth/Login"),                     { ssr:false })
+const CookiesPolicy     = dynamic(() => import("@/src/features/cookies/CookiesPolicy"),          { ssr:false })
 
 export function PageRouter() {
   const { activePage } = useNav()
@@ -25,6 +26,7 @@ export function PageRouter() {
     case "Notificaciones": return <NotificationsPage />
     case "Configuración":  return <SettingsPage />
     case "Login":          return <Login />
+    case "Política de Cookies":          return <CookiesPolicy />
     default:               return <Feed />
   }
 }

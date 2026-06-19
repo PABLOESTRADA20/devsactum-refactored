@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Terminal, AtSign, Lock, Eye, EyeOff, ArrowRight } from "lucide-react"
+import { AtSign, Lock, Eye, EyeOff, ArrowRight } from "lucide-react"
 import { useNav } from "@/src/store/nav"
 import { useToast } from "@/src/components/ui/Toast"
 import { Button } from "@/src/components/ui/Button"
@@ -52,8 +52,8 @@ export default function Login() {
         <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] bg-[var(--secondary)]/4 rounded-full blur-[100px]" />
 
         <div className="relative z-10 max-w-[480px]">
-          <div className="w-14 h-14 rounded-[var(--radius-2xl)] bg-[var(--primary-soft)] border border-[var(--primary-border)] flex items-center justify-center mb-6 glow-primary">
-            <Terminal size={24} className="text-[var(--primary)]" strokeWidth={1.8} />
+          <div className="w-14 h-14 rounded-[var(--radius-2xl)] overflow-hidden mb-6 glow-primary">
+            <img src="/logo.jpeg" alt="Devsanctum" className="w-full h-full object-cover" />
           </div>
           <h1 className="gradient-text text-[44px] font-black tracking-[-2px] leading-[1.1] mb-4">
             Donde los devs<br />
@@ -90,8 +90,8 @@ export default function Login() {
       <div className="flex-1 flex items-center justify-center px-8 py-12">
         <div className="w-full max-w-[420px]">
           <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-10 h-10 rounded-[var(--radius-lg)] bg-[var(--primary-soft)] border border-[var(--primary-border)] flex items-center justify-center">
-              <Terminal size={18} className="text-[var(--primary)]" strokeWidth={1.8} />
+            <div className="w-10 h-10 rounded-[var(--radius-lg)] overflow-hidden">
+              <img src="/logo.jpeg" alt="Devsanctum" className="w-full h-full object-cover" />
             </div>
             <span className="text-lg font-black gradient-text">Devsanctum</span>
           </div>
@@ -196,11 +196,17 @@ export default function Login() {
 
           <p className="text-xs text-[var(--text-muted)] text-center mt-6 leading-[1.6]">
             Al continuar, aceptas nuestros{" "}
-            <button className="bg-transparent border-none text-[var(--primary)] font-bold cursor-pointer hover:underline p-0">
-              T\u00e9rminos
+            <button
+              onClick={() => setActivePage("Política de Cookies")}
+              className="bg-transparent border-none text-[var(--primary)] font-bold cursor-pointer hover:underline p-0"
+            >
+              Términos
             </button>{" "}
             y{" "}
-            <button className="bg-transparent border-none text-[var(--primary)] font-bold cursor-pointer hover:underline p-0">
+            <button
+              onClick={() => setActivePage("Política de Cookies")}
+              className="bg-transparent border-none text-[var(--primary)] font-bold cursor-pointer hover:underline p-0"
+            >
               Privacidad
             </button>
           </p>

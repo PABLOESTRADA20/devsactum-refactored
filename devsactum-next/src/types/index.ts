@@ -10,6 +10,7 @@ export type Page =
   | "Perfil"
   | "Notificaciones"
   | "Configuración"
+  | "Política de Cookies"
 
 // ─── User / Auth ──────────────────────────────────────────────────────────────
 

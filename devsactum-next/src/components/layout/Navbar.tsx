@@ -1,8 +1,8 @@
 "use client"
 import React, { useState } from "react"
 import {
-  Terminal, Hash, Compass, Users, Bookmark, MessageCircle,
-  User, Settings, Bell, ChevronLeft, ChevronRight, Sparkles,
+  Hash, Compass, Users, Bookmark, MessageCircle,
+  User, Settings, Bell, ChevronLeft, ChevronRight, Sparkles, FileText,
 } from "lucide-react"
 import { useNav } from "@/src/store/nav"
 import type { Page } from "@/src/types"
@@ -44,8 +44,8 @@ export function Navbar() {
     >
       {/* Logo */}
       <div className={`flex items-center gap-2.5 px-[18px] h-[58px] shrink-0 border-b border-[var(--border)] ${collapsed ? "justify-center px-0" : ""}`}>
-        <div className="w-8 h-8 rounded-[var(--radius-lg)] bg-[var(--primary-soft)] border border-[var(--primary-border)] flex items-center justify-center shrink-0 glow-primary">
-          <Terminal size={15} className="text-[var(--primary)]" strokeWidth={2} />
+        <div className="w-8 h-8 rounded-[var(--radius-lg)] overflow-hidden shrink-0 glow-primary">
+          <img src="/logo.jpeg" alt="Devsanctum" className="w-full h-full object-cover" />
         </div>
         {!collapsed && (
           <span className="text-base font-black gradient-text tracking-[-0.3px]">
@@ -103,8 +103,21 @@ export function Navbar() {
         ))}
       </div>
 
+      {/* Legal */}
+      <div className="px-2 pt-2 pb-0 border-t border-[var(--border)]">
+        {!collapsed && (
+          <button
+            onClick={() => setActivePage("Política de Cookies")}
+            className="w-full flex items-center gap-2.5 rounded-[var(--radius-lg)] text-sm font-semibold cursor-pointer transition-all duration-[var(--duration-fast)] ease-[var(--ease-out)] px-3 py-2.5 text-[var(--text-soft)] border border-transparent hover:bg-[var(--nav-hover-bg)] hover:text-[var(--text-h)]"
+          >
+            <FileText size={16} strokeWidth={1.8} className="shrink-0" />
+            <span className="flex-1 text-left">Política de Cookies</span>
+          </button>
+        )}
+      </div>
+
       {/* Footer */}
-      <div className="px-2 py-3 border-t border-[var(--border)] space-y-2">
+      <div className="px-2 py-3 space-y-2">
         {!collapsed && (
           <button
             onClick={() => setActivePage("Login" as Page)}
